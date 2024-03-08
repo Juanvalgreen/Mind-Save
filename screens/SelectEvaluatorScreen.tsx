@@ -1,16 +1,50 @@
-import { Text, View } from "react-native";
+import {Button,Text,Image,View,StyleSheet,Pressable,ImageBackground,} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import PrimaryButton from "../components/PrimaryButton";
+import SecondaryButton from "../components/SecondaryButton";
+import InfoScreen from "./InfoScreen";
+import QuestionTitle from "../components/QuestionTitle";
+import QuestionText from "../components/QuestionText";
+import Header from "../components/Header";
+  
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#092C4C",
+        justifyContent: 'space-between'
+        
 
-export default function SelectEvaluatorScreen(){
+    },
+    questionContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    }
+});
+  
+  export default function SelectEvaluatorScreen() {
+    const navigation = useNavigation();
+  
+    const nameInput = () => {
+      navigation.navigate("NameInputScreen");
+    };
+  
+    const navigateInfo = () => {
+      navigation.navigate("InfoScreen");
+    };
+  
+    return (
+        <View style={styles.container}>
+            <Header></Header>
 
+            <View style={styles.questionContainer}>
 
+                <QuestionTitle text='¿Quién será evaluado?'></QuestionTitle>
+                <QuestionText text='Escoge una opción' ></QuestionText>
 
-    return(
-        <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text>Select Evaluator</Text>
-
-
-
+                <PrimaryButton text="Yo mismo" action={() => nameInput} ></PrimaryButton>
+                <SecondaryButton text="Evaluaré a alguien más" action={() => InfoScreen} ></SecondaryButton>
+            </View>
         </View>
-    )
-
-}
+    );
+  }
