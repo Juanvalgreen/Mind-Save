@@ -1,11 +1,14 @@
 import {Button,Text,Image,View,StyleSheet,Pressable,ImageBackground,} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux"; 
+
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import InfoScreen from "./InfoScreen";
 import QuestionTitle from "../components/QuestionTitle";
 import QuestionText from "../components/QuestionText";
 import Header from "../components/Header";
+import { GlobalState, UserInfo } from "../types/types";
   
 const styles = StyleSheet.create({
     container: {
@@ -23,6 +26,10 @@ const styles = StyleSheet.create({
 });
   
   export default function SelectEvaluatorScreen() {
+
+    const examInfo: any = useSelector((state: GlobalState) => state.examInfo);
+    const userInfo: any = useSelector((state: GlobalState) => state.userInfo);
+
     const navigation = useNavigation();
   
     const nameInput = () => {
@@ -32,12 +39,16 @@ const styles = StyleSheet.create({
     const navigateInfo = () => {
       navigation.navigate("InfoScreen");
     };
+
+    console.log(examInfo);
   
     return (
         <View style={styles.container}>
             <Header></Header>
 
             <View style={styles.questionContainer}>
+                <Text>{examInfo.orientation.floorQuestion}</Text>
+                <Text>{userInfo.name}</Text>
 
                 <QuestionTitle text='¿Quién será evaluado?'></QuestionTitle>
                 <QuestionText text='Escoge una opción' ></QuestionText>

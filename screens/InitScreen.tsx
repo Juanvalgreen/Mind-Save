@@ -1,4 +1,5 @@
 import { Button, Text, Image, View, StyleSheet, Pressable, ImageBackground } from "react-native";
+import { UseDispatch, useDispatch } from "react-redux";
 import {useNavigation} from '@react-navigation/native';
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
@@ -24,11 +25,20 @@ const styles = StyleSheet.create({
   });
 
 export default function InitScreen() {
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
   const navigateStart = () => {
     navigation.navigate('SelectEvaluator',);
+    dispatch({
+      type: 'userInfo/setName',
+      payload: 'Jorge'
+    });
+    dispatch({
+      type: 'examInfo/setOrientationFloorQuestion',
+      payload: 22
+    });
   }
 
   const navigateInfo = () => {
