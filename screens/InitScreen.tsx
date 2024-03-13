@@ -35,10 +35,7 @@ export default function InitScreen() {
       type: 'userInfo/setName',
       payload: 'Jorge'
     });
-    dispatch({
-      type: 'examInfo/setOrientationFloorQuestion',
-      payload: 22
-    });
+
   }
 
   const navigateInfo = () => {

@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     }
 });
   
-  export default function SelectEvaluatorScreen() {
+export default function SelectEvaluatorScreen() {
 
-    const examInfo: any = useSelector((state: GlobalState) => state.examInfo);
+
     const userInfo: any = useSelector((state: GlobalState) => state.userInfo);
 
     const navigation = useNavigation();
@@ -39,16 +39,12 @@ const styles = StyleSheet.create({
     const navigateInfo = () => {
       navigation.navigate("InfoScreen");
     };
-
-    console.log(examInfo);
   
     return (
         <View style={styles.container}>
             <Header></Header>
 
             <View style={styles.questionContainer}>
-                <Text>{examInfo.orientation.floorQuestion}</Text>
-                <Text>{userInfo.name}</Text>
 
                 <QuestionTitle text='¿Quién será evaluado?'></QuestionTitle>
                 <QuestionText text='Escoge una opción' ></QuestionText>

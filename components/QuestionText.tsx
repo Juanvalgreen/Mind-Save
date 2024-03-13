@@ -6,13 +6,14 @@ type titleProps = {
 
 const styles = StyleSheet.create({
     text: {
+
         fontSize: 18,
         marginTop: 18,
         color: 'white',
         fontWeight: '300'
 
     }
-})
+});
 
 export default function QuestionText({text} : titleProps){
 
