@@ -1,6 +1,6 @@
 import {Button,Text,Image,View,StyleSheet,Pressable,ImageBackground,} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux"; 
 
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
@@ -9,6 +9,7 @@ import QuestionTitle from "../components/QuestionTitle";
 import QuestionText from "../components/QuestionText";
 import Header from "../components/Header";
 import { GlobalState, UserInfo } from "../types/types";
+import { progressActions } from "../reducers";
   
 const styles = StyleSheet.create({
     container: {
@@ -27,18 +28,23 @@ const styles = StyleSheet.create({
   
 export default function SelectEvaluatorScreen() {
 
+    const dispatch = useDispatch();
 
-    const userInfo: any = useSelector((state: GlobalState) => state.userInfo);
 
     const navigation = useNavigation();
   
     const nameInput = () => {
       navigation.navigate("NameInputScreen");
+
+      dispatch(progressActions.actions.setTotalProgress(0.001));
     };
   
     const navigateInfo = () => {
       navigation.navigate("InfoScreen");
     };
+
+    
+
   
     return (
         <View style={styles.container}>

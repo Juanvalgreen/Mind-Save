@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#005C9E',
     },
     primaryTextButton: {
-        fontFamily: 'Gilroy',
         fontSize: 16,
         lineHeight: 21,
         fontWeight: 'bold',

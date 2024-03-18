@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#CCECE4',
       },
       secondaryTextButton: {
-        fontFamily: 'Gilroy',
         fontSize: 16,
         lineHeight: 21,
         fontWeight: 'bold',

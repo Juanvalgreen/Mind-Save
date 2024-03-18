@@ -160,14 +160,14 @@ const progressSlice = createSlice({
   initialState: initialState.totalProgress,
   reducers: {
     setTotalProgress(state, action) {
-      state = action.payload;
+      return action.payload
     }
   },
 });
 
 
 
-
+export const progressActions = progressSlice;
 export const userReducer = userSlice.reducer;
 export const examReducer = examSlice.reducer;
 export const progressReducer = progressSlice.reducer;

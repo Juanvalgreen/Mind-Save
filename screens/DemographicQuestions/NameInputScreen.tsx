@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import QuestionText from "../components/QuestionText";
-import QuestionTitle from "../components/QuestionTitle";
+import QuestionText from "../../components/QuestionText";
+import QuestionTitle from "../../components/QuestionTitle";
 import { TextInput } from "react-native-paper";
-import Header from "../components/Header";
-import { useDispatch } from "react-redux";
+import Header from "../../components/Header";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import SecondaryButton from "../components/SecondaryButton";
+import SecondaryButton from "../../components/SecondaryButton";
+import { progressActions } from "../../reducers";
+
 
 const styles = StyleSheet.create({
     container: {
@@ -39,17 +41,20 @@ const styles = StyleSheet.create({
 export default function NameInputScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    // const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
 
     const [nameAnswer, setNameAnswer] = useState<string>('');
 
 
     const submit = () => {
-        navigation.navigate('InfoScreen');
+        navigation.navigate("BirthInputScreen");
 
         dispatch({
             type: 'userInfo/setName',
             payload: nameAnswer
-        })
+        });
+
+        dispatch(progressActions.actions.setTotalProgress(0.033));
     }
 
     
@@ -59,14 +64,14 @@ export default function NameInputScreen(){
             
             <Header></Header>
             <View style={styles.questionContainer}>
+
                 <QuestionTitle text='¿Cuál es su nombre?'></QuestionTitle>
                 <QuestionText text='Escriba su nombre completo'></QuestionText>
             
                 <TextInput onChangeText={(text) => setNameAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Nombre" ></TextInput>
 
                 {nameAnswer ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
-            
-            
+
             </View>
         </View>
 

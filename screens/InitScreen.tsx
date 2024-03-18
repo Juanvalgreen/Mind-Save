@@ -22,29 +22,30 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     }
 
-  });
+});
 
 export default function InitScreen() {
-  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
   const navigateStart = () => {
-    navigation.navigate('SelectEvaluator',);
-    dispatch({
-      type: 'userInfo/setName',
-      payload: 'Jorge'
-    });
+
+    navigation.navigate('SelectEvaluator');
 
   }
 
   const navigateInfo = () => {
+
     navigation.navigate('InfoScreen');
+
   }
 
 
 
+
+
     return(
+
       <View style={styles.container}>
           <ImageBackground source={require('../assets/LogoBackground.png')} style={styles.imageBackground}>
             <Image source ={require('../assets/Logo (2).png')} />
@@ -54,6 +55,7 @@ export default function InitScreen() {
 
         
           </ImageBackground>
-        </View>
-    )
+      </View>
+
+    );
 }
