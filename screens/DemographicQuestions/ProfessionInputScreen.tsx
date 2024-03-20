@@ -40,20 +40,20 @@ const styles = StyleSheet.create({
 });
 
 
-export default function NameInputScreen(){
+export default function ProfessionInputScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
 
-    const [nameAnswer, setNameAnswer] = useState<string>('');
+    const [professionAnswer, setProfessionAnswer] = useState<string>('');
 
 
     const submit = () => {
-        navigation.navigate("BirthInputScreen");
+        // navigation.navigate("BirthInputScreen");
 
         dispatch({
-            type: 'userInfo/setName',
-            payload: nameAnswer
+            type: 'userInfo/setProfession',
+            payload: professionAnswer
         });
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
@@ -67,12 +67,12 @@ export default function NameInputScreen(){
             <Header></Header>
             <View style={styles.questionContainer}>
 
-                <QuestionTitle text='¿Cuál es su nombre?'></QuestionTitle>
-                <QuestionText text='Escriba su nombre completo'></QuestionText>
+                <QuestionTitle text='¿Que profesión tiene?'></QuestionTitle>
+                <QuestionText text='Escriba cual es su ocupación'></QuestionText>
             
-                <TextInput onChangeText={(text) => setNameAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Nombre" ></TextInput>
+                <TextInput onChangeText={(text) => setProfessionAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Ocupación" ></TextInput>
 
-                {nameAnswer ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
+                {professionAnswer ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
 
             </View>
         </View>

@@ -56,3 +56,4 @@ export type GlobalStateContextType = {
   state: GlobalState;
   setState: React.Dispatch<React.SetStateAction<GlobalState>>;
 };
+

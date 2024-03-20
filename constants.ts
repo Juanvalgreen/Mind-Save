@@ -1,0 +1,1 @@
+export const incrementValue: number = 0.033

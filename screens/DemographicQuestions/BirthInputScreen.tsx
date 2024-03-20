@@ -2,12 +2,14 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import QuestionText from "../../components/QuestionText";
 import QuestionTitle from "../../components/QuestionTitle";
-import { TextInput } from "react-native-paper";
+import { TextInput, Text } from "react-native-paper";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import SecondaryButton from "../../components/SecondaryButton";
 import { progressActions } from "../../reducers";
+import { GlobalState } from "../../types/types";
+import { incrementValue } from "../../constants";
 
 
 const styles = StyleSheet.create({
@@ -42,6 +44,12 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
         borderBottomWidth: 1,
         width: '30%',
+    },
+    warningText:{
+        marginVertical: 12,
+        color: 'red',
+        fontSize: 18,
+        fontWeight: '400'
     }
 
 });
@@ -50,20 +58,45 @@ const styles = StyleSheet.create({
 export default function BirthInputScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    // const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
 
-    const [nameAnswer, setNameAnswer] = useState<string>('');
+    const [birthAnswer, setBirthAnswer] = useState({
+        month: '',
+        day: '',
+        year: ''
+    });
 
+    const [validDate, setValidDate] = useState(true);
+
+    const handleInputChange = (field: string, text: string) => {
+        // setValidDate(true);
+        setBirthAnswer(prev => ({
+            ...prev,
+            [field]: text
+        }));
+    };
+    
+    const isValidDate = (year: number, month:number, day: number) => {
+        const date = new Date(year, month - 1, day); // El mes está indexado en base 0 (enero es 0)
+        return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+    };
 
     const submit = () => {
-        navigation.navigate('InfoScreen');
 
+        if(!isValidDate(parseInt(birthAnswer.year), parseInt(birthAnswer.month), parseInt(birthAnswer.day))){
+            setValidDate(false);
+            return
+        }
+
+        
         dispatch({
             type: 'userInfo/setName',
-            payload: nameAnswer
+            payload: `${birthAnswer.month}/${birthAnswer.day}/${birthAnswer.year}`
         });
-
-        dispatch(progressActions.actions.setTotalProgress(0.033));
+        
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
+        
+        navigation.navigate("CanReadScreen");
     }
 
     
@@ -77,13 +110,12 @@ export default function BirthInputScreen(){
                 <QuestionTitle text='¿Cuando nació?'></QuestionTitle>
                 <QuestionText text='Indique su fecha de nacimiento'></QuestionText>
                 <View style={styles.inputContainer}>
-                    <TextInput onChangeText={(text) => setNameAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Mes" ></TextInput>
-                    <TextInput onChangeText={(text) => setNameAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Dia" ></TextInput>
-                    <TextInput onChangeText={(text) => setNameAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Año" ></TextInput>
-
+                    <TextInput onChangeText={(text) => handleInputChange('day',text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Dia" keyboardType="numeric"></TextInput>
+                    <TextInput onChangeText={(text) => handleInputChange('month',text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Mes" keyboardType="numeric"></TextInput>
+                    <TextInput onChangeText={(text) => handleInputChange('year',text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Año" keyboardType="numeric" ></TextInput>
                 </View>
-
-                {nameAnswer ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
+                {validDate ? null : <Text style={styles.warningText}>Introduzca una fecha valida</Text>}
+                {birthAnswer.month && birthAnswer.day && birthAnswer.year.length == 4 ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
 
             </View>
         </View>

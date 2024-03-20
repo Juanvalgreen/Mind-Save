@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
 export default function ProgressBar(){
 
 
-    // const [barProgress,setBarProgress]= useState<number>(0.2);
+    const [numberProgress,setNumberProgress]= useState<number>(1);
     const globalProgress = useSelector((state: GlobalState) => state.totalProgress);
 
 
 
     // useEffect(()=>{
-    //     setProgress(globalProgress);
+    //     setNumberProgress((prev) => prev + 1);
 
-    // },[])
+    // },[globalProgress])
 
     
 
@@ -44,7 +44,7 @@ export default function ProgressBar(){
 
             <Progress.Bar progress={globalProgress} width={350} color='#007759' unfilledColor='white'/>
 
-            <Text style={styles.belowText}>1 de 3</Text>
+            <Text style={styles.belowText}> {numberProgress} de 30</Text>
 
         
         </View>
