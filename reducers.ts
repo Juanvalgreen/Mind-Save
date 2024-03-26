@@ -12,7 +12,7 @@ const initialState: GlobalState = {
   examInfo: {
     orientation: {
       yearQuestion: 0,
-      seasonQuestion: 0,
+      hourQuestion: 0,
       monthDayQuestion: 0,
       weekDayQuestion: 0,
       monthQuestion: 0,
@@ -76,8 +76,8 @@ const examSlice = createSlice({
     setOrientationYearQuestion(state, action) {
       state.orientation.yearQuestion = action.payload;
     },
-    setOrientationSeasonQuestion(state, action) {
-      state.orientation.seasonQuestion = action.payload;
+    setOrientationHourQuestion(state, action) {
+      state.orientation.hourQuestion = action.payload;
     },
     setOrientationMonthDayQuestion(state, action) {
       state.orientation.monthDayQuestion = action.payload;

@@ -57,6 +57,8 @@ export default function ProfessionInputScreen(){
         });
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
+
+        navigation.navigate('YearQuestionScreen')
     }
 
     

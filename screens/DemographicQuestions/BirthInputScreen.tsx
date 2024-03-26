@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 export default function BirthInputScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
     const [birthAnswer, setBirthAnswer] = useState({
         month: '',

@@ -11,7 +11,7 @@ export type UserInfo = {
 export type ExamInfo = {
     orientation: {
         yearQuestion: 1 | 0,
-        seasonQuestion: 1 | 0,
+        hourQuestion: 1 | 0,
         monthDayQuestion: 1 | 0,
         weekDayQuestion: 1 | 0,
         monthQuestion: 1 | 0,
@@ -57,3 +57,7 @@ export type GlobalStateContextType = {
   setState: React.Dispatch<React.SetStateAction<GlobalState>>;
 };
 
+export type optionsSelect= { 
+    label: string;
+    value: number
+}

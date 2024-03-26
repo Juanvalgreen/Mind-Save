@@ -30,13 +30,13 @@ export default function InitScreen() {
 
   const navigateStart = () => {
 
-    navigation.navigate('SelectEvaluator');
+    navigation.navigate("SelectEvaluator");
 
   }
 
   const navigateInfo = () => {
 
-    navigation.navigate('InfoScreen');
+    navigation.navigate("WeekDayQuestionScreen");
 
   }
 

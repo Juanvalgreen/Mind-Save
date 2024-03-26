@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 24,
         color: '#CCECE4',
-        fontWeight: '700'
-
+        fontWeight: '700',
+        textAlign: 'center'
     }
 })
 

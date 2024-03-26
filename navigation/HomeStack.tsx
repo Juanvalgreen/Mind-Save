@@ -8,6 +8,11 @@ import BirthInputScreen from '../screens/DemographicQuestions/BirthInputScreen';
 import CanReadScreen from '../screens/DemographicQuestions/CanReadScreen';
 import CanWriteScreen from '../screens/DemographicQuestions/CanWriteScreen';
 import ProfessionInputScreen from '../screens/DemographicQuestions/ProfessionInputScreen';
+import YearQuestionScreen from '../screens/TemporalOrientation/YearQuestionScreen';
+import HourQuestionScreen from '../screens/TemporalOrientation/HourQuestionScreen';
+import MonthQuestionScreen from '../screens/TemporalOrientation/MonthQuestionScreen';
+import MonthDayQuestionScreen from '../screens/TemporalOrientation/MonthDayQuestionScreen';
+import WeekDayQuestionScreen from '../screens/TemporalOrientation/WeekDayQuestionScreen';
 
 
 
@@ -25,6 +30,13 @@ export default function HomeStackNavigator () {
       <HomeStack.Screen name="CanReadScreen" component={CanReadScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="CanWriteScreen" component={CanWriteScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="ProfessionInputScreen" component={ProfessionInputScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="YearQuestionScreen" component={YearQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="HourQuestionScreen" component={HourQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="MonthQuestionScreen" component={MonthQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="MonthDayQuestionScreen" component={MonthDayQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="WeekDayQuestionScreen" component={WeekDayQuestionScreen} options={{headerShown: false}}/>
+
+
 
     </HomeStack.Navigator>
   );
