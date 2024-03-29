@@ -6,20 +6,22 @@ import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
-import { optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
+import { optionsSelect } from "../../types/types";
 
 
-const weekDaysArray = [
-    "Lunes",
-    "Martes",
-    "Miercoles",
-    "Jueves",
-    "Viernes",
-    "Sabado",
-    "Domingo"
+const deparmentsArray: string[] = [
+    "Amazonas",
+    "Antioquia",
+    "Arauca",
+    "Atlántico",
+    "Bolívar",
+    "Boyacá",
+    "Cundinamarca",
+    "Valle del Cauca",
+    "Vaupés",
+    "Vichada"
 ];
-  
 
 const styles = StyleSheet.create({
 
@@ -58,12 +60,12 @@ const styles = StyleSheet.create({
 });
 
 
-const generateWeekArray = (): Array<optionsSelect> => {
+const generateDeparmentsArray = (): Array<optionsSelect> => {
     const monthsOptions: Array<optionsSelect> = [];
 
-    weekDaysArray.map((day, i) => {
+    deparmentsArray.map((deparment, i) => {
         
-        monthsOptions.push({ label: day, value: i + 1 });
+        monthsOptions.push({ label: deparment, value: deparment});
 
     });
 
@@ -77,38 +79,38 @@ const generateWeekArray = (): Array<optionsSelect> => {
 
 
 
-export default function WeekDayQuestionScreen(){
+export default function DeparmentQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const [answer, setAnswer] = useState<number>(0);
+    const [answer, setAnswer] = useState<string>('');
     const [options, setOptions] = useState<optionsSelect[]>([])
 
     useEffect(() => {
 
-        setOptions(generateWeekArray());
+        setOptions(generateDeparmentsArray());
 
     }, [])
 
 
     const onSubmit = () => {
 
-        const actualWeekDay = new Date().getDay() ; 
-        if(answer === actualWeekDay){
+        const actualCountry = 'Valle del Cauca'; 
+        if(answer === actualCountry){
 
             dispatch({
-                type: 'examInfo/setOrientationWeekDayQuestion',
+                type: 'examInfo/setOrientationRegionQuestion',
                 payload: 1
             });
 
         } else {
             dispatch({
-                type: 'examInfo/setOrientationWeekDayQuestion',
+                type: 'examInfo/setOrientationRegionQuestion',
                 payload: 0
             });
         }
 
         
-        navigation.navigate("CountryQuestionScreen");
+        navigation.navigate("CityQuestionScreen");
 
     }
 
@@ -123,12 +125,12 @@ export default function WeekDayQuestionScreen(){
             <View style={styles.questionContainer}>
                 <View style={styles.title}>
 
-                    <QuestionTitle  text="¿En que día de la semana estamos?"></QuestionTitle>
+                    <QuestionTitle  text="¿En que departamento estamos?"></QuestionTitle>
                 </View>
 
                 <View style={styles.inputContainer}>
                     <RNPickerSelect
-                    placeholder={{label: 'Selecciona un día', value: null }}
+                    placeholder={{label: 'Selecciona un departamento', value: null }}
                     style={pickerSelectStyles}
                     onValueChange={(value) => setAnswer(value)}        
                     items={options}/> 

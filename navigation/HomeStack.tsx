@@ -13,6 +13,9 @@ import HourQuestionScreen from '../screens/TemporalOrientation/HourQuestionScree
 import MonthQuestionScreen from '../screens/TemporalOrientation/MonthQuestionScreen';
 import MonthDayQuestionScreen from '../screens/TemporalOrientation/MonthDayQuestionScreen';
 import WeekDayQuestionScreen from '../screens/TemporalOrientation/WeekDayQuestionScreen';
+import CountryQuestionScreen from '../screens/SpacialOrientation/CountryQuestionScreen';
+import DeparmentQuestionScreen from '../screens/SpacialOrientation/DeparmentQuestionScreen';
+import CityQuestionScreen from '../screens/SpacialOrientation/CityQuestionScreen';
 
 
 
@@ -35,6 +38,9 @@ export default function HomeStackNavigator () {
       <HomeStack.Screen name="MonthQuestionScreen" component={MonthQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="MonthDayQuestionScreen" component={MonthDayQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="WeekDayQuestionScreen" component={WeekDayQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="CountryQuestionScreen" component={CountryQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="DeparmentQuestionScreen" component={DeparmentQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="CityQuestionScreen" component={CityQuestionScreen} options={{headerShown: false}}/>
 
 
 

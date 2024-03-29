@@ -75,14 +75,14 @@ export default function MonthDayQuestionScreen(){
     useEffect(() => {
 
         setOptions(generateMonthDayArray());
-        console.log(new Date().getUTCDate()-1);
 
     }, [])
 
 
     const onSubmit = () => {
 
-        const actualDayMonth = new Date().getUTCDate() - 1; 
+        const actualDayMonth = new Date().getUTCDate();
+        console.log(actualDayMonth);
         if(answer === actualDayMonth){
 
             dispatch({
