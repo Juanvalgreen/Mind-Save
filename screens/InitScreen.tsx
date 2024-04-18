@@ -36,7 +36,7 @@ export default function InitScreen() {
 
   const navigateInfo = () => {
 
-    navigation.navigate("CityQuestionScreen");
+    navigation.navigate("RepeatWordQuestionScreen");
 
   }
 

@@ -9,6 +9,8 @@ const styles = StyleSheet.create({
 
         fontSize: 18,
         marginTop: 18,
+        paddingHorizontal: 22,
+        textAlign: 'center',
         color: 'white',
         fontWeight: '300'
 

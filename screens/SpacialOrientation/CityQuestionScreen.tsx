@@ -114,7 +114,7 @@ export default function CityQuestionScreen(){
         }
 
         
-        navigation.navigate("InfoScreen");
+        navigation.navigate("RepeatWordQuestionScreen");
 
     }
 

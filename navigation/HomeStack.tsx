@@ -16,6 +16,11 @@ import WeekDayQuestionScreen from '../screens/TemporalOrientation/WeekDayQuestio
 import CountryQuestionScreen from '../screens/SpacialOrientation/CountryQuestionScreen';
 import DeparmentQuestionScreen from '../screens/SpacialOrientation/DeparmentQuestionScreen';
 import CityQuestionScreen from '../screens/SpacialOrientation/CityQuestionScreen';
+import WhereQuestionScreen from '../screens/SpacialOrientation/WhereQuestionScreen';
+import RepeatWordQuestionScreen from '../screens/Focus/RepeatWordQuestionScreen';
+import MinusSequenceQuestionScreen from '../screens/Calculation/MinusSequenceQuestionScreen';
+import ReverseSpellingQuestionScreen from '../screens/Calculation/ReverseSpellingQuestionScreen';
+import RememberWordsQuestionScreen from '../screens/Memory/RememberWordsQuestionScreen';
 
 
 
@@ -41,6 +46,16 @@ export default function HomeStackNavigator () {
       <HomeStack.Screen name="CountryQuestionScreen" component={CountryQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="DeparmentQuestionScreen" component={DeparmentQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="CityQuestionScreen" component={CityQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="WhereQuestionScreen" component={WhereQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="RepeatWordQuestionScreen" component={RepeatWordQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="MinusSequenceQuestionScreen" component={MinusSequenceQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="ReverseSpellingQuestionScreen" component={ReverseSpellingQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="RememberWordsQuestionScreen" component={RememberWordsQuestionScreen} options={{headerShown: false}}/>
+
+
+
+      
+
 
 
 
