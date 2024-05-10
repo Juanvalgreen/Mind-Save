@@ -11,13 +11,13 @@ import SecondaryButton from "../../components/SecondaryButton";
 
 
 const weekDaysArray = [
+    "Domingo",
     "Lunes",
     "Martes",
     "Miercoles",
     "Jueves",
     "Viernes",
-    "Sabado",
-    "Domingo"
+    "Sabado"
 ];
   
 
@@ -63,7 +63,7 @@ const generateWeekArray = (): Array<optionsSelect> => {
 
     weekDaysArray.map((day, i) => {
         
-        monthsOptions.push({ label: day, value: i + 1 });
+        monthsOptions.push({ label: day, value: i });
 
     });
 
@@ -93,6 +93,7 @@ export default function WeekDayQuestionScreen(){
     const onSubmit = () => {
 
         const actualWeekDay = new Date().getDay() ; 
+        console.log(actualWeekDay, answer);
         if(answer === actualWeekDay){
 
             dispatch({

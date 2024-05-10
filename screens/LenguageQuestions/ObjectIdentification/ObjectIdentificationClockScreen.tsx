@@ -1,16 +1,17 @@
+
 import {useState, useEffect} from  "react"
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { useDispatch, useSelector} from "react-redux";
 import {useNavigation} from '@react-navigation/native';
-import Header from "../../components/Header";
-import QuestionTitle from "../../components/QuestionTitle";
+import Header from "../../../components/Header";
+import QuestionTitle from "../../../components/QuestionTitle";
 
-import { GlobalState, optionsSelect } from "../../types/types";
-import SecondaryButton from "../../components/SecondaryButton";
-import QuestionText from "../../components/QuestionText";
+import { GlobalState, optionsSelect } from "../../../types/types";
+import SecondaryButton from "../../../components/SecondaryButton";
+import QuestionText from "../../../components/QuestionText";
 
 import Voice from "@react-native-voice/voice";
-import PrimaryButton from "../../components/PrimaryButton";
+import PrimaryButton from "../../../components/PrimaryButton";
 
 
 
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     title: {
         width: '80%',
         textAlign: 'center',
-        marginBottom: 20
+        marginVertical: 28
     },
     inputContainer:{
         marginTop: 86,
@@ -53,35 +54,51 @@ const styles = StyleSheet.create({
 
 });
 
-// TODO: Should refactor when the spike of speech recognition its done
 
-export default function RepeatWordQuestionScreen(){
+
+
+
+// TODO: Should refactor when the spike of speech recognition its done
+export default function ObjectIdentificationClockScreen(){
+    
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
 
-    const [voiceResult, setVoiceResult] = useState<string | undefined>('');
+     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
     const [error, setError] = useState<any>(null);
     const [isRecording, setIsRecording] = useState(false);
 
     Voice.onSpeechStart = () => {
         setIsRecording(true);
-        console.log('recorfing start');
+        console.log(voiceResult);
     };
 
-    Voice.onSpeechEnd = () => setIsRecording(false);
+    Voice.onSpeechEnd = () => {
+    
+        setIsRecording(false);
+        console.log('stopeed');
+        stopRecording();
+    
+    };
 
     Voice.onSpeechError = (error) => {
         setError(error)
         console.log(error);
     };
 
-    Voice.onSpeechResults = (result) => setVoiceResult(result.value ? result.value[0] : undefined);
+    Voice.onSpeechResults = (result) => {
+
+        setVoiceResult(result.value ? result.value[0] : undefined);
+
+        console.log('results', result)
+            
+    };
 
     const startRecording = async () => {
         if (Voice) {
             try {
-                await Voice.start('en-US');
+                await Voice.start('es-CO');
             } catch (error) {
                 setError(error);
                 console.log(error);
@@ -104,32 +121,47 @@ export default function RepeatWordQuestionScreen(){
         }
     }
 
-    const handleContinue = () => {
-        
-        navigation.navigate("RememberWordsQuestionScreen");
+    const confirmCorrectAnswer = () : number => {
+
+
+        return voiceResult?.includes('reloj') ? 1 : 0;
 
     }
 
+    const handleContinue = () => {
 
+        dispatch({
+            type: "examInfo/setFixationRepeatWordsQuestion",
+            payload: confirmCorrectAnswer(),
+        });
+        
+        stopRecording();
+        navigation.navigate("InfoScreen");
+
+    }
+    
+    
+    
+    
     return(
         <View style={styles.container}>
             <Header></Header>
             
+            <Text>{voiceResult}</Text>
             <View style={styles.questionContainer}>
+
+
+                <Image source={require('../../../assets/reloj 1.jpg')}></Image>
 
                 <View style={styles.title}>
 
-                    <QuestionTitle  text="Escuche las palabras y repitalas"></QuestionTitle>
-                    <QuestionText text="Escuche con atención las 3 palabras y oprima
-                    el botón cuando este listo para repetirlas">
-                    </QuestionText>
-                    <QuestionText text="Recuerdelas durante toda la prueba">
-                    </QuestionText>
+                    <QuestionText text="¿Qué es esto?" />
+                
+                    {/*Should refactor with proper logic*/}
                 </View>
 
-                {/*Should refactor with proper logic*/}
-                <PrimaryButton text="Listo" action={() => handleContinue}></PrimaryButton>
-
+                {!voiceResult && <PrimaryButton text="Listo" action={() => startRecording} />}
+                {voiceResult && <SecondaryButton text="Siguiente" action={() => handleContinue} />}
 
 
             </View>
@@ -138,7 +170,3 @@ export default function RepeatWordQuestionScreen(){
         </View>
     )
 }
-
-
-
-

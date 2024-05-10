@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { TextInput } from "react-native-paper";
+import { Text, TextInput } from "react-native-paper";
 import Header from "../../components/Header";
 import QuestionText from "../../components/QuestionText";
 import QuestionTitle from "../../components/QuestionTitle";
@@ -10,12 +10,18 @@ import { useNavigation } from "@react-navigation/native";
 import { progressActions } from "../../reducers";
 import { GlobalState } from "../../types/types";
 import { incrementValue } from "../../constants";
+import PrimaryButton from "../../components/PrimaryButton";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#092C4C",
     justifyContent: "space-between",
+  },
+  text: {
+    color: "white",
+    fontSize: 32,
+    marginTop: 12
   },
   questionContainer: {
     flex: 1,
@@ -24,7 +30,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "column",
-    justifyContent: "space-around",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
     width: "75%",
     marginBottom : 26
   },
@@ -34,25 +42,27 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginVertical: 10,
     backgroundColor: "#092C4C",
     borderBottomColor: "white",
     borderBottomWidth: 1,
-    width: "30%",
+    width: "18%",
     color: "white",
+    textAlign: "center"
   },
 });
 
-const INITIAL_NUMBER = 100;
+const WORD_TO_SPELL = 'MUNDO';
 
-export default function MinusSequenceQuestionScreen() {
+export default function ReverseSpellingQuestionScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
-  const [answers, setAnswers] = useState([`${INITIAL_NUMBER}`, "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
   const [showButton, setShowButton] = useState(false);
+  const [showInput, setShowInput ] = useState(false);
+  const [showReadyButton, setShowReadyButton] = useState(true);
 
   const handleInputChange = (index: number, text: string) => {
     const newAnswers = [...answers];
@@ -67,12 +77,14 @@ export default function MinusSequenceQuestionScreen() {
   const confirmCorrectAnswer = (): number => {
     let correctCounter = 0;
   
+    // Convertir la palabra al revés a minúsculas
+    const reversedWordLowerCase = WORD_TO_SPELL.toLowerCase().split('').reverse().join('');
   
-    // Verify that each answer is the result of subtracting multiples of 7 from the initial number 100
-    for (let i = 1; i < answers.length; i++) {
-      const currentNumber = parseInt(answers[i], 10);
-      const expectedNumber = INITIAL_NUMBER- (i * 7);
-      if (currentNumber === expectedNumber) {
+    // Verificar que cada respuesta sea correcta
+    for (let i = 0; i < answers.length; i++) {
+      // Convertir la respuesta ingresada por el usuario a minúsculas
+      const userAnswerLowerCase = answers[i].toLowerCase();
+      if (userAnswerLowerCase === reversedWordLowerCase[i]) {
         correctCounter++;
       }
     }
@@ -84,25 +96,35 @@ export default function MinusSequenceQuestionScreen() {
   const submit = () => {
 
     dispatch({
-      type: "examInfo/setCalcAttentionMinusSequenceQuestion",
+      type: "examInfo/setCalcAttentionSpellingQuestion",
       payload: confirmCorrectAnswer(),
     });
 
     dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
     // Navegar a la siguiente pantalla
-    navigation.navigate("ReverseSpellingQuestion");
+    navigation.navigate("RememberWordsQuestionScreen");
   };
+
+
+  const startInputs = () => {
+    setShowInput(true);
+    setShowReadyButton(false);
+  }
 
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.questionContainer}>
-        <QuestionTitle text="Debe restar de 7 en 7, desde 100" />
-        <QuestionText text="En cada espacio siga la secuencia" />
-        <View style={styles.inputContainer}>
+        <QuestionTitle text="Deletree esta palabra al revés " />
+        {!showInput && <QuestionText text="Cuando haya memorizado la palabra, oprima el boton e inicie a deletrear"></QuestionText>}
+        {showInput && <QuestionText text="Deletree al revés la palabra que memorizó"></QuestionText>}
+
+        { showInput ?
+
+          <View style={styles.inputContainer}>
           <View style={styles.inputRow}>
-            {answers.slice(0, 3).map((answer, index) => (
+            {answers.map((answer, index) => (
               <TextInput
                 key={index}
                 onChangeText={(text) => handleInputChange(index, text)}
@@ -110,26 +132,24 @@ export default function MinusSequenceQuestionScreen() {
                 theme={{ colors: { onSurface: "white"}}} 
                 style={styles.input}
                 placeholderTextColor="white"
-                keyboardType="numeric"
                 textColor="white"
-                disabled = {index === 0}
-              />
-            ))}
+                maxLength={1}
+                />
+                ))}
           </View>
-          <View style={styles.inputRow}>
-            {answers.slice(3).map((answer, index) => (
-              <TextInput
-                key={index + 3}
-                onChangeText={(text) => handleInputChange(index + 3, text)}
-                value={answer}
-                theme={{ colors: { onSurface: "white"}}} 
-                style={styles.input}
-                placeholderTextColor="white"
-                keyboardType="numeric"
-              />
-            ))}
-          </View>
-        </View>
+        </View> :
+        <>
+        
+          <View style={styles.inputContainer}>
+
+            <Text style={styles.text}>{WORD_TO_SPELL}</Text>
+
+          </View> 
+        {showReadyButton && <PrimaryButton text="Empiece a deletrear" action={() => startInputs} />}
+
+        
+        </>
+        }
         {showButton && <SecondaryButton text="Siguiente" action={() => submit} />}
       </View>
     </View>

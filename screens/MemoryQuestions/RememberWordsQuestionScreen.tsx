@@ -110,7 +110,7 @@ export default function RememberWordsQuestionScreen(){
 
     const handleContinue = () => {
         
-        navigation.navigate("InfoScreen");
+        navigation.navigate("ObjectIdentificationIntroScreen");
     
     }
     
@@ -133,7 +133,7 @@ export default function RememberWordsQuestionScreen(){
 
                 </View>
 
-                <PrimaryButton text="Listo" action={() => startRecording}></PrimaryButton>
+                <  PrimaryButton text="Listo" action={() => handleContinue}/>
 
 
             </View>

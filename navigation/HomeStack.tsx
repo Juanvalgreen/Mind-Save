@@ -17,10 +17,14 @@ import CountryQuestionScreen from '../screens/SpacialOrientation/CountryQuestion
 import DeparmentQuestionScreen from '../screens/SpacialOrientation/DeparmentQuestionScreen';
 import CityQuestionScreen from '../screens/SpacialOrientation/CityQuestionScreen';
 import WhereQuestionScreen from '../screens/SpacialOrientation/WhereQuestionScreen';
-import RepeatWordQuestionScreen from '../screens/Focus/RepeatWordQuestionScreen';
-import MinusSequenceQuestionScreen from '../screens/Calculation/MinusSequenceQuestionScreen';
-import ReverseSpellingQuestionScreen from '../screens/Calculation/ReverseSpellingQuestionScreen';
-import RememberWordsQuestionScreen from '../screens/Memory/RememberWordsQuestionScreen';
+import RepeatWordQuestionScreen from '../screens/FocusQuestions/RepeatWordQuestionScreen';
+import MinusSequenceQuestionScreen from '../screens/CalculationQuestions/MinusSequenceQuestionScreen';
+import ReverseSpellingQuestionScreen from '../screens/CalculationQuestions/ReverseSpellingQuestionScreen';
+import RememberWordsQuestionScreen from '../screens/MemoryQuestions/RememberWordsQuestionScreen';
+import ObjectIdentificationIntroScreen from '../screens/LenguageQuestions/ObjectIdentification/ObjectIdentificationIntroScreen';
+import ObjectIdentificationPencilScreen from '../screens/LenguageQuestions/ObjectIdentification/ObjectIdentificationPencilScreen';
+import ObjectIdentificationClockScreen from '../screens/LenguageQuestions/ObjectIdentification/ObjectIdentificationClockScreen';
+import RepeatWordIntroScreen from '../screens/FocusQuestions/RepeatWordQuestionIntroScreen';
 
 
 
@@ -48,9 +52,16 @@ export default function HomeStackNavigator () {
       <HomeStack.Screen name="CityQuestionScreen" component={CityQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="WhereQuestionScreen" component={WhereQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="RepeatWordQuestionScreen" component={RepeatWordQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="RepeatWordsIntroScreen" component={RepeatWordIntroScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="MinusSequenceQuestionScreen" component={MinusSequenceQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="ReverseSpellingQuestionScreen" component={ReverseSpellingQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="RememberWordsQuestionScreen" component={RememberWordsQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="ObjectIdentificationPencilScreen" component={ObjectIdentificationPencilScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="ObjectIdentificationClockScreen" component={ObjectIdentificationClockScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="ObjectIdentificationIntroScreen" component={ObjectIdentificationIntroScreen} options={{headerShown: false}}/>
+
+
+
 
 
 
