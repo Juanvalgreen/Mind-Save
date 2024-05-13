@@ -21,7 +21,7 @@ export default function Header(){
     return(
         <View style= {styles.container}>
             <Image source={require('../assets/WhiteLogo.png')}></Image>
-            <Image source={require('../assets/iconConfig.png')}></Image>
+            <Image source={require('../assets/InfoIcon.png')}></Image>
         </View>
     )
 }

@@ -36,7 +36,7 @@ export default function InitScreen() {
 
   const navigateInfo = () => {
 
-    navigation.navigate("ObjectIdentificationIntroScreen");
+    navigation.navigate("RepeatSentenceIntroScreen");
 
   }
 

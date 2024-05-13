@@ -77,8 +77,6 @@ export default function ObjectIdentificationClockScreen(){
     Voice.onSpeechEnd = () => {
     
         setIsRecording(false);
-        console.log('stopeed');
-        stopRecording();
     
     };
 
@@ -89,13 +87,14 @@ export default function ObjectIdentificationClockScreen(){
 
     Voice.onSpeechResults = (result) => {
 
-        setVoiceResult(result.value ? result.value[0] : undefined);
-
         console.log('results', result)
+
+        setVoiceResult(result.value ? result.value[0] : undefined);
             
     };
 
     const startRecording = async () => {
+
         if (Voice) {
             try {
                 await Voice.start('es-CO');
@@ -109,6 +108,7 @@ export default function ObjectIdentificationClockScreen(){
     }
     
     const stopRecording = async () => {
+
         if (Voice) {
             try {
                 await Voice.stop();
@@ -123,20 +123,24 @@ export default function ObjectIdentificationClockScreen(){
 
     const confirmCorrectAnswer = () : number => {
 
+        let points = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
 
-        return voiceResult?.includes('reloj') ? 1 : 0;
+        points += voiceResult?.includes('lápiz') ? 1 : 0;
+
+        return points;
 
     }
 
     const handleContinue = () => {
 
+        Voice.destroy();
+
         dispatch({
-            type: "examInfo/setFixationRepeatWordsQuestion",
+            type: "examInfo/setLanguageObjectIdentificationQuestion",
             payload: confirmCorrectAnswer(),
         });
         
-        stopRecording();
-        navigation.navigate("InfoScreen");
+        navigation.navigate("RepeatSentenceIntroScreen");
 
     }
     

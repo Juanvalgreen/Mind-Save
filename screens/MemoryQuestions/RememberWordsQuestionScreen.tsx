@@ -57,12 +57,10 @@ const styles = StyleSheet.create({
 
 
 
-// TODO: Should refactor when the spike of speech recognition its done
 export default function RememberWordsQuestionScreen(){
     
     const dispatch = useDispatch();
     const navigation = useNavigation();
-
 
     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
     const [error, setError] = useState<any>(null);
@@ -70,22 +68,33 @@ export default function RememberWordsQuestionScreen(){
 
     Voice.onSpeechStart = () => {
         setIsRecording(true);
-        console.log('recorfing start');
+        console.log(voiceResult);
     };
 
-    Voice.onSpeechEnd = () => setIsRecording(false);
+    Voice.onSpeechEnd = () => {
+    
+        setIsRecording(false);
+        console.log('stopeed');
+    
+    };
 
     Voice.onSpeechError = (error) => {
         setError(error)
         console.log(error);
     };
 
-    Voice.onSpeechResults = (result) => setVoiceResult(result.value ? result.value[0] : undefined);
+    Voice.onSpeechResults = (result) => {
+
+        setVoiceResult(result.value ? result.value[0] : undefined);
+
+        console.log('results', result)
+            
+    };
 
     const startRecording = async () => {
         if (Voice) {
             try {
-                await Voice.start('en-US');
+                await Voice.start('es-CO');
             } catch (error) {
                 setError(error);
                 console.log(error);
@@ -108,10 +117,34 @@ export default function RememberWordsQuestionScreen(){
         }
     }
 
+    const confirmCorrectAnswer = () => {
+
+        let pointsCounter = 0;
+
+        if(voiceResult) {
+
+            voiceResult.includes('cuchara') && pointsCounter++ ;
+            voiceResult.includes('manzana') && pointsCounter++ ;
+            voiceResult.includes('bicicleta') && pointsCounter++ ;
+            
+            
+
+        }
+
+        return pointsCounter
+    }
+
     const handleContinue = () => {
+
+        dispatch({
+            type: "examInfo/setFixationRepeatWordsQuestion",
+            payload: confirmCorrectAnswer(),
+        });
         
+        Voice.destroy();
         navigation.navigate("ObjectIdentificationIntroScreen");
-    
+
+
     }
     
     
@@ -125,7 +158,7 @@ export default function RememberWordsQuestionScreen(){
 
                 <View style={styles.title}>
 
-                    <QuestionTitle  text="Repita las palabras 3 de la primera prueba"></QuestionTitle>
+                    <QuestionTitle  text="Repita las 3 palabras que escuchó antes"></QuestionTitle>
                     <QuestionText text="Cuando este listo oprima el boton y repita las 3 palabras">
                     </QuestionText>
                     
@@ -133,7 +166,8 @@ export default function RememberWordsQuestionScreen(){
 
                 </View>
 
-                <  PrimaryButton text="Listo" action={() => handleContinue}/>
+                {!voiceResult && <PrimaryButton text="Empezar a repetir" action={() => startRecording}></PrimaryButton>}
+                {voiceResult && <PrimaryButton text="Siguiente" action={() => handleContinue}></PrimaryButton>}
 
 
             </View>

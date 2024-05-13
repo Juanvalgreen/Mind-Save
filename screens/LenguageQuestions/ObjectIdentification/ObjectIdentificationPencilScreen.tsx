@@ -63,9 +63,10 @@ export default function ObjectIdentificationQuestionScreen(){
     
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    
 
 
-     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
+    const [voiceResult, setVoiceResult] = useState<string | undefined>('');
     const [error, setError] = useState<any>(null);
     const [isRecording, setIsRecording] = useState(false);
 
@@ -122,19 +123,23 @@ export default function ObjectIdentificationQuestionScreen(){
 
     const confirmCorrectAnswer = () : number => {
 
+        let points = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
 
-        return voiceResult?.includes('lápiz') ? 1 : 0;
+        points += voiceResult?.includes('lápiz') ? 1 : 0;
+
+        return points;
 
     }
 
     const handleContinue = () => {
 
+        Voice.destroy();
+
         dispatch({
-            type: "examInfo/setFixationRepeatWordsQuestion",
+            type: "examInfo/setLanguageObjectIdentificationQuestion",
             payload: confirmCorrectAnswer(),
         });
         
-        stopRecording();
         navigation.navigate("ObjectIdentificationClockScreen");
 
     }

@@ -88,7 +88,7 @@ export default function RepeatWordIntroScreen(){
 
                 <View style={styles.title}>
 
-                    <QuestionTitle  text="Escuche las palabras con atención y memorice"></QuestionTitle>
+                    <QuestionTitle  text="Escuche las palabras con atención y memorice durante toda la prueba"></QuestionTitle>
                     <QuestionText text="Oprima el botón para escuchar las palabras, solo sonarán una vez">
                     </QuestionText>
                     {/* <QuestionText text="tendrá que repetirlas"> */}

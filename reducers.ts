@@ -50,19 +50,19 @@ const userSlice = createSlice({
   name: 'userInfo',
   initialState: initialState.userInfo,
   reducers: {
-    setName(state, action) {
+    setName(state, action) { //
       state.name = action.payload;
     },
-    setDateOfBirth(state, action){
+    setDateOfBirth(state, action){ //
       state.dateOfBirth = action.payload;
     },
-    setCanRead(state, action){
+    setCanRead(state, action){ //
       state.canRead = action.payload;
     },
-    setCanWrite(state, action){
+    setCanWrite(state, action){ //
       state.canWrite = action.payload;
     },
-    setProfession(state, action){
+    setProfession(state, action){ //
       state.profession = action.payload;
     }
   },
@@ -73,72 +73,72 @@ const examSlice = createSlice({
   initialState: initialState.examInfo,
   reducers: {
     // Orientation
-    setOrientationYearQuestion(state, action) {
+    setOrientationYearQuestion(state, action) { //
       state.orientation.yearQuestion = action.payload;
     },
-    setOrientationHourQuestion(state, action) {
+    setOrientationHourQuestion(state, action) { //
       state.orientation.hourQuestion = action.payload;
     },
-    setOrientationMonthDayQuestion(state, action) {
+    setOrientationMonthDayQuestion(state, action) { //
       state.orientation.monthDayQuestion = action.payload;
     },
-    setOrientationWeekDayQuestion(state, action) {
+    setOrientationWeekDayQuestion(state, action) { //
       state.orientation.weekDayQuestion = action.payload;
     },
-    setOrientationMonthQuestion(state, action) {
+    setOrientationMonthQuestion(state, action) { //
       state.orientation.monthQuestion = action.payload;
     },
-    setOrientationCountryQuestion(state, action) {
+    setOrientationCountryQuestion(state, action) { //
       state.orientation.countryQuestion = action.payload;
     },
-    setOrientationRegionQuestion(state, action) {
+    setOrientationRegionQuestion(state, action) { //
       state.orientation.regionQuestion = action.payload;
     },
-    setOrientationCityQuestion(state, action) {
+    setOrientationCityQuestion(state, action) { //
       state.orientation.cityQuestion = action.payload;
     },
-    setOrientationWhereWeAreQuestion(state, action) {
+    setOrientationWhereWeAreQuestion(state, action) { //
       state.orientation.whereWeAreQuestion = action.payload;
     },
-    setOrientationFloorQuestion(state, action) {
+    setOrientationFloorQuestion(state, action) { /* Falta adaptación */
       state.orientation.floorQuestion = action.payload;
     },
     
     // Fixation
-    setFixationRepeatWordsQuestion(state, action) {
+    setFixationRepeatWordsQuestion(state, action) { // 
       state.fixation.repeatWordsQuestion = action.payload;
     },
     
     // CalcAttention
-    setCalcAttentionMinusSequenceQuestion(state, action) {
+    setCalcAttentionMinusSequenceQuestion(state, action) { //
       state.calcAttention.minusSequenceQuestion = action.payload;
     },
-    setCalcAttentionSpellingQuestion(state, action) {
+    setCalcAttentionSpellingQuestion(state, action) { //
       state.calcAttention.spellingQuestion = action.payload;
     },
     
     // Memory
-    setMemoryRememberWordsQuestion(state, action) {
+    setMemoryRememberWordsQuestion(state, action) { // 
       state.memory.rememberWordsQuestion = action.payload;
     },
     
     // Language
-    setLanguageObjectIdentificationQuestion(state, action) {
+    setLanguageObjectIdentificationQuestion(state, action) { //
       state.lenguage.objectIdentificationQuestion = action.payload;
     },
-    setLanguageRepeatSentence(state, action) {
+    setLanguageRepeatSentence(state, action) { // 
       state.lenguage.repeatSentence = action.payload;
     },
-    setLanguageSayInstructionsQuestion(state, action) {
+    setLanguageSayInstructionsQuestion(state, action) { /* Falta AI implementación*/
       state.lenguage.sayInstructionsQuestion = action.payload;
     },
-    setLanguageReadInstructionQuestion(state, action) {
+    setLanguageReadInstructionQuestion(state, action) { /* Falta AI implementación */
       state.lenguage.readInstructionQuestion = action.payload;
     },
-    setLanguageWriteSentenceQuestion(state, action) {
+    setLanguageWriteSentenceQuestion(state, action) { /* Falta AI implementación */
       state.lenguage.writeSenteceQuestion = action.payload;
     },
-    setLanguageDrawQuestion(state, action) {
+    setLanguageDrawQuestion(state, action) { /* Falta adaptación */
       state.lenguage.drawQuestion = action.payload;
     },
     

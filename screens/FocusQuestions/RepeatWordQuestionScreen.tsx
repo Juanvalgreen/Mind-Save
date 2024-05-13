@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
 // TODO: Should refactor when the spike of speech recognition its done
 
 export default function RepeatWordQuestionScreen(){
-      const [sound, setSound] = useState<any>();
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
@@ -138,7 +137,7 @@ export default function RepeatWordQuestionScreen(){
             payload: confirmCorrectAnswer(),
         });
         
-        stopRecording();
+        Voice.destroy();
         navigation.navigate("MinusSequenceQuestionScreen");
 
     }
@@ -162,8 +161,8 @@ export default function RepeatWordQuestionScreen(){
 
                 </View>
 
-                {/*Should refactor with proper logic*/}
-                {!voiceResult && <PrimaryButton text="Repetir" action={() => startRecording}></PrimaryButton>}
+
+                {!voiceResult && <PrimaryButton text="Empezar a repetir" action={() => startRecording}></PrimaryButton>}
                 {voiceResult && <PrimaryButton text="Siguiente" action={() => handleContinue}></PrimaryButton>}
 
 
