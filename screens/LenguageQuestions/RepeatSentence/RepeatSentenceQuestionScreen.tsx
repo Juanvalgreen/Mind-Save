@@ -2,20 +2,16 @@ import {useState, useEffect} from  "react"
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector} from "react-redux";
 import {useNavigation} from '@react-navigation/native';
-import Header from "../../components/Header";
-import QuestionTitle from "../../components/QuestionTitle";
-
-import { GlobalState, optionsSelect } from "../../types/types";
-import SecondaryButton from "../../components/SecondaryButton";
-import QuestionText from "../../components/QuestionText";
-
-import { progressActions } from "../../reducers";
-import { incrementValue } from "../../constants";
-
+import Header from "../../../components/Header";
+import QuestionTitle from "../../../components/QuestionTitle";
+import { Audio } from 'expo-av';
+import QuestionText from "../../../components/QuestionText";
+import { progressActions } from "../../../reducers";
+import { incrementValue } from "../../../constants";
 
 import Voice from "@react-native-voice/voice";
-import PrimaryButton from "../../components/PrimaryButton";
-
+import PrimaryButton from "../../../components/PrimaryButton";
+import { GlobalState } from "../../../types/types";
 
 
 
@@ -57,17 +53,14 @@ const styles = StyleSheet.create({
 
 });
 
+// TODO: Should refactor when the spike of speech recognition its done
 
-
-
-
-export default function RememberWordsQuestionScreen(){
-    
+export default function RepeatSentenceQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
-    
+
     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
     const [error, setError] = useState<any>(null);
     const [isRecording, setIsRecording] = useState(false);
@@ -129,9 +122,8 @@ export default function RememberWordsQuestionScreen(){
 
         if(voiceResult) {
 
-            voiceResult.includes('cuchara') && pointsCounter++ ;
-            voiceResult.includes('manzana') && pointsCounter++ ;
-            voiceResult.includes('bicicleta') && pointsCounter++ ;
+            voiceResult.includes('ni no ni sí ni pero') && pointsCounter++ ;
+
             
             
 
@@ -145,43 +137,46 @@ export default function RememberWordsQuestionScreen(){
         Voice.destroy();
 
         dispatch({
-            type: "examInfo/setMemoryRememberWordsQuestion",
+            type: "examInfo/setLanguageRepeatSentence",
             payload: confirmCorrectAnswer(),
         });
 
         dispatch({
             type: 'examSection/setExamSection',
-            payload: 'Lenguaje'
+            payload: ''
         });
+
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
-        navigation.navigate("ObjectIdentificationIntroScreen");
-
+        navigation.navigate("InfoScreen");
 
     }
-    
-    
-    
-    
+
+
+
     return(
         <View style={styles.container}>
             <Header></Header>
             
             <View style={styles.questionContainer}>
 
+                {voiceResult ? <Text>{voiceResult}</Text> : null}
+
                 <View style={styles.title}>
 
-                    <QuestionTitle  text="Repita las 3 palabras que escuchó antes"></QuestionTitle>
-                    <QuestionText text="Cuando este listo oprima el boton y repita las 3 palabras">
+                    <QuestionTitle  text="Repita la frase que escuchó"></QuestionTitle>
+                    <QuestionText text="Cuando este listo, oprima el botón y repita la frase">
                     </QuestionText>
-                    
-                    {/*Should refactor with proper logic*/}
+
 
                 </View>
 
+
                 {!voiceResult && <PrimaryButton text="Empezar a repetir" action={() => startRecording}></PrimaryButton>}
                 {voiceResult && <PrimaryButton text="Siguiente" action={() => handleContinue}></PrimaryButton>}
+
+
 
 
             </View>
@@ -190,3 +185,7 @@ export default function RememberWordsQuestionScreen(){
         </View>
     )
 }
+
+
+
+

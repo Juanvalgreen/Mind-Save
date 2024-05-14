@@ -13,7 +13,8 @@ import QuestionText from "../../../components/QuestionText";
 import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../../components/PrimaryButton";
 
-
+import { progressActions } from "../../../reducers";
+import { incrementValue } from "../../../constants";
 
 
 
@@ -63,9 +64,11 @@ export default function ObjectIdentificationClockScreen(){
     
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
+    const prevPoints = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
 
 
-     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
+    const [voiceResult, setVoiceResult] = useState<string | undefined>('');
     const [error, setError] = useState<any>(null);
     const [isRecording, setIsRecording] = useState(false);
 
@@ -123,7 +126,7 @@ export default function ObjectIdentificationClockScreen(){
 
     const confirmCorrectAnswer = () : number => {
 
-        let points = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
+        let points = prevPoints;
 
         points += voiceResult?.includes('lápiz') ? 1 : 0;
 
@@ -139,6 +142,10 @@ export default function ObjectIdentificationClockScreen(){
             type: "examInfo/setLanguageObjectIdentificationQuestion",
             payload: confirmCorrectAnswer(),
         });
+
+
+    
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
         navigation.navigate("RepeatSentenceIntroScreen");
 

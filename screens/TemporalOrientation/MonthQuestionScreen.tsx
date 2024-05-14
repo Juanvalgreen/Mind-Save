@@ -6,9 +6,10 @@ import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
-import { optionsSelect } from "../../types/types";
+import { GlobalState, optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
-
+import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 
 const monthsArray = [
     "Enero",
@@ -87,6 +88,8 @@ export default function MonthQuestionScreen(){
     const navigation = useNavigation();
     const [answer, setAnswer] = useState<number>(0);
     const [options, setOptions] = useState<optionsSelect[]>([])
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
+
 
     useEffect(() => {
 
@@ -111,6 +114,10 @@ export default function MonthQuestionScreen(){
                 payload: 0
             });
         }
+
+
+
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         
         navigation.navigate("MonthDayQuestionScreen");

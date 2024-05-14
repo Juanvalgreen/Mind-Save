@@ -27,20 +27,21 @@ export default function ProgressBar(){
 
     const [numberProgress,setNumberProgress]= useState<number>(1);
     const globalProgress = useSelector((state: GlobalState) => state.totalProgress);
+    const globalExamSection = useSelector((state: GlobalState) => state.examSection);
 
 
 
-    // useEffect(()=>{
-    //     setNumberProgress((prev) => prev + 1);
+    useEffect(()=>{
+        setNumberProgress((prev) => prev + 1);
 
-    // },[globalProgress])
+    },[globalProgress])
 
     
 
 
     return(
         <View style={styles.container}>
-            <Text style={styles.aboveText}>Preguntas Demograficás</Text>
+            <Text style={styles.aboveText}>{globalExamSection}</Text>
 
             <Progress.Bar progress={globalProgress} width={350} color='#007759' unfilledColor='white'/>
 

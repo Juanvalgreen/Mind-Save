@@ -7,8 +7,9 @@ import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
 import SecondaryButton from "../../components/SecondaryButton";
-import { optionsSelect } from "../../types/types";
-
+import { GlobalState, optionsSelect } from "../../types/types";
+import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 import * as Location from 'expo-location';
 
 
@@ -86,6 +87,7 @@ const generateCityArray = (): Array<optionsSelect> => {
 export default function CityQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
     const [answer, setAnswer] = useState<string>('');
     const [options, setOptions] = useState<optionsSelect[]>([])
 
@@ -112,6 +114,15 @@ export default function CityQuestionScreen(){
                 payload: 0
             });
         }
+
+        dispatch({
+            type: 'examSection/setExamSection',
+            payload: 'Concentración'
+        });
+
+
+
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         
         navigation.navigate("RepeatWordIntroScreen");

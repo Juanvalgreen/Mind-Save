@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 export default function ProfessionInputScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
     const [professionAnswer, setProfessionAnswer] = useState<string>('');
 
@@ -54,6 +54,11 @@ export default function ProfessionInputScreen(){
         dispatch({
             type: 'userInfo/setProfession',
             payload: professionAnswer
+        });
+
+        dispatch({
+            type: 'examSection/setExamSection',
+            payload: 'Orientación temporal'
         });
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));

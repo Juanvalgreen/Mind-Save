@@ -8,7 +8,8 @@ import QuestionTitle from "../../components/QuestionTitle";
 import RNPickerSelect from 'react-native-picker-select';
 import { GlobalState, optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
-
+    import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 
 
 
@@ -75,6 +76,9 @@ const generateHoursArray = () : Array<optionsSelect> => {
 export default function HourQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
+
     const [answer, setAnswer] = useState<number>(0);
     const [options, setOptions] = useState<optionsSelect[]>([])
 
@@ -102,6 +106,7 @@ export default function HourQuestionScreen(){
             });
         }
 
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
         navigation.navigate("MonthQuestionScreen");
 

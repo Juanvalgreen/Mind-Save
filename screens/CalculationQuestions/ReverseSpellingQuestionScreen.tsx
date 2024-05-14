@@ -100,6 +100,11 @@ export default function ReverseSpellingQuestionScreen() {
       payload: confirmCorrectAnswer(),
     });
 
+    dispatch({
+      type: 'examSection/setExamSection',
+      payload: 'Memoria'
+    });
+
     dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
     // Navegar a la siguiente pantalla

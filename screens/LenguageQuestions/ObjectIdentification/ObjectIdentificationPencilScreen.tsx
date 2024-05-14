@@ -64,6 +64,7 @@ export default function ObjectIdentificationQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
     
+    const prevPoints = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
 
 
     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
@@ -123,7 +124,7 @@ export default function ObjectIdentificationQuestionScreen(){
 
     const confirmCorrectAnswer = () : number => {
 
-        let points = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
+        let points = prevPoints;
 
         points += voiceResult?.includes('lápiz') ? 1 : 0;
 

@@ -6,9 +6,10 @@ import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
-import { optionsSelect } from "../../types/types";
+import { GlobalState, optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
-
+        import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 
 const weekDaysArray = [
     "Domingo",
@@ -82,7 +83,8 @@ export default function WeekDayQuestionScreen(){
     const navigation = useNavigation();
     const [answer, setAnswer] = useState<number>(0);
     const [options, setOptions] = useState<optionsSelect[]>([])
-
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
+    
     useEffect(() => {
 
         setOptions(generateWeekArray());
@@ -107,6 +109,15 @@ export default function WeekDayQuestionScreen(){
                 payload: 0
             });
         }
+
+        dispatch({
+            type: 'examSection/setExamSection',
+            payload: 'Orientación espacial'
+        });
+
+
+
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         
         navigation.navigate("CountryQuestionScreen");

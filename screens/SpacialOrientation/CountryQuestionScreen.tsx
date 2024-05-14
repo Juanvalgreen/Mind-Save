@@ -7,9 +7,10 @@ import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
 import SecondaryButton from "../../components/SecondaryButton";
-import { optionsSelect } from "../../types/types";
+import { GlobalState, optionsSelect } from "../../types/types";
 import { useForegroundPermissions } from "expo-location";
-
+import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 
 const countriesArray: string[] = [
     "Estados Unidos",
@@ -86,6 +87,7 @@ const generateCountryArray = (): Array<optionsSelect> => {
 export default function CountryQuestionScreen(){
     const [location, setLocation] = useState(null);
     const dispatch = useDispatch();
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
     const navigation = useNavigation();
     const [answer, setAnswer] = useState<string>('');
     const [options, setOptions] = useState<optionsSelect[]>([])
@@ -113,6 +115,9 @@ export default function CountryQuestionScreen(){
                 payload: 0
             });
         }
+
+
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         
         navigation.navigate("DeparmentQuestionScreen");

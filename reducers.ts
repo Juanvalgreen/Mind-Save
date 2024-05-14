@@ -44,6 +44,7 @@ const initialState: GlobalState = {
     itAutoEvaluation: true,
   },
   totalProgress: 0,
+  examSection: 'Preguntas demográficas'
 };
 
 const userSlice = createSlice({
@@ -165,9 +166,20 @@ const progressSlice = createSlice({
   },
 });
 
+const examSectionSlice = createSlice({
+    name: 'examSection',
+  initialState: initialState.examSection,
+  reducers: {
+    setExamSection(state, action) {
+      return action.payload
+    }
+  },
+})
+
 
 
 export const progressActions = progressSlice;
 export const userReducer = userSlice.reducer;
 export const examReducer = examSlice.reducer;
 export const progressReducer = progressSlice.reducer;
+export const examSectionReducer = examSectionSlice.reducer;

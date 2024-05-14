@@ -7,8 +7,9 @@ import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
 import SecondaryButton from "../../components/SecondaryButton";
-import { optionsSelect } from "../../types/types";
-
+import { GlobalState, optionsSelect } from "../../types/types";
+import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 
 const deparmentsArray: string[] = [
     "Amazonas",
@@ -84,6 +85,7 @@ export default function DeparmentQuestionScreen(){
     const navigation = useNavigation();
     const [answer, setAnswer] = useState<string>('');
     const [options, setOptions] = useState<optionsSelect[]>([])
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
     useEffect(() => {
 
@@ -109,6 +111,8 @@ export default function DeparmentQuestionScreen(){
             });
         }
 
+
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
         navigation.navigate("CityQuestionScreen");
 

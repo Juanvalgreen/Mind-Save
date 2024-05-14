@@ -6,9 +6,13 @@ import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
 import { Audio } from 'expo-av';
 import QuestionText from "../../components/QuestionText";
+import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
+
 
 import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../components/PrimaryButton";
+import { GlobalState } from "../../types/types";
 
 
 
@@ -51,11 +55,11 @@ const styles = StyleSheet.create({
 
 });
 
-// TODO: Should refactor when the spike of speech recognition its done
 
 export default function RepeatWordQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
 
     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
@@ -117,6 +121,7 @@ export default function RepeatWordQuestionScreen(){
 
         let pointsCounter = 0;
 
+
         if(voiceResult) {
 
             voiceResult.includes('cuchara') && pointsCounter++ ;
@@ -132,12 +137,20 @@ export default function RepeatWordQuestionScreen(){
 
     const handleContinue = () => {
 
+        Voice.destroy();
+
         dispatch({
             type: "examInfo/setFixationRepeatWordsQuestion",
             payload: confirmCorrectAnswer(),
         });
         
-        Voice.destroy();
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
+
+        dispatch({
+            type: 'examSection/setExamSection',
+            payload: 'Atención y cálculo'
+        });
+
         navigation.navigate("MinusSequenceQuestionScreen");
 
     }

@@ -90,7 +90,7 @@ export default function MinusSequenceQuestionScreen() {
 
     dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
-    // Navegar a la siguiente pantalla
+   
     navigation.navigate("ReverseSpellingQuestionScreen");
   };
 

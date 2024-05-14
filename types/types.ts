@@ -48,7 +48,8 @@ export type ExamInfo = {
 export type GlobalState = {
     userInfo: UserInfo,
     examInfo: ExamInfo,
-    totalProgress: number,
+    totalProgress: number
+    examSection: string
 };
 
 // Define el tipo del contexto

@@ -6,9 +6,10 @@ import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
 
 import RNPickerSelect from 'react-native-picker-select';
-import { optionsSelect } from "../../types/types";
+import { GlobalState, optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
-
+import { incrementValue } from "../../constants";
+import { progressActions } from "../../reducers";
 
 
 const styles = StyleSheet.create({
@@ -71,7 +72,7 @@ export default function MonthDayQuestionScreen(){
     const navigation = useNavigation();
     const [answer, setAnswer] = useState<number>(0);
     const [options, setOptions] = useState<optionsSelect[]>([])
-
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
     useEffect(() => {
 
         setOptions(generateMonthDayArray());
@@ -83,7 +84,7 @@ export default function MonthDayQuestionScreen(){
 
         const actualDayMonth = new Date().getUTCDate();
         console.log(actualDayMonth);
-        if(answer === actualDayMonth){
+        if(answer === actualDayMonth - 1 ){
 
             dispatch({
                 type: 'examInfo/setOrientationMonthDayQuestion',
@@ -97,6 +98,9 @@ export default function MonthDayQuestionScreen(){
             });
         }
 
+
+        
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
         navigation.navigate("WeekDayQuestionScreen");
 
