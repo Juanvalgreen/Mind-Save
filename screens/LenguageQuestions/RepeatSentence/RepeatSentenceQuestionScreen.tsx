@@ -149,7 +149,7 @@ export default function RepeatSentenceQuestionScreen(){
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
-        navigation.navigate("InfoScreen");
+        navigation.navigate("ReadInstructionIntroScreen");
 
     }
 

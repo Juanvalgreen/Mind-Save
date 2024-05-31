@@ -1,8 +1,10 @@
-import { Button, Pressable, StyleSheet, Text } from "react-native"
+import React from 'react';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
 type ButtonProps = {
     text: string,
-    action: Function
+    action: Function,
+    enabled?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -19,6 +21,9 @@ const styles = StyleSheet.create({
         elevation: 3,
         backgroundColor: '#005C9E',
     },
+    disabledButton: {
+        backgroundColor: '#52626D',
+    },
     primaryTextButton: {
         fontSize: 16,
         lineHeight: 21,
@@ -26,25 +31,15 @@ const styles = StyleSheet.create({
         letterSpacing: 0.25,
         color: 'white',
     }
-
 });
 
-
-
-
-
-export default function PrimaryButton({text, action} : ButtonProps){
-
-
-
-
-
-
-
-
-    return(
-        <Pressable style = {styles.primaryButton} onPress={action()}>
-            <Text style = {styles.primaryTextButton}>{text}</Text>
+export default function PrimaryButton({ text, action, enabled = true }: ButtonProps) {
+    return (
+        <Pressable 
+            style={[styles.primaryButton, !enabled && styles.disabledButton]} 
+            onPress={enabled ? action() : null}
+        >
+            <Text style={styles.primaryTextButton}>{text}</Text>
         </Pressable>
-    )
+    );
 }

@@ -27,6 +27,11 @@ import ObjectIdentificationClockScreen from '../screens/LenguageQuestions/Object
 import RepeatWordIntroScreen from '../screens/FocusQuestions/RepeatWordQuestionIntroScreen';
 import RepeatSentenceQuestionScreen from '../screens/LenguageQuestions/RepeatSentence/RepeatSentenceQuestionScreen';
 import RepeatSentenceIntroScreen from '../screens/LenguageQuestions/RepeatSentence/RepeatSentenceIntroScreen';
+import ReadInstructionQuestionScreen from '../screens/LenguageQuestions/ReadInstruction/ReadInstructionQuestionScreen';
+import ReadInstructionIntroScreen from '../screens/LenguageQuestions/ReadInstruction/ReadInstructionIntroScreen';
+import SayInstructionIntroScreen from '../screens/LenguageQuestions/SayInstruction/SayInstructionIntroScreen';
+import SayInstructionQuestionScreen from '../screens/LenguageQuestions/SayInstruction/SayInstructionQuestionScreen';
+import WriteSencetenceQuestionScreen from '../screens/LenguageQuestions/WriteSencetenceQuestionScreen';
 
 
 
@@ -35,7 +40,7 @@ const HomeStack = createNativeStackNavigator();
 export default function HomeStackNavigator () {
   return (
     <HomeStack.Navigator >
-
+    
       <HomeStack.Screen name="Home" component={InitScreen} options={{headerShown: false}} />  
       <HomeStack.Screen name="SelectEvaluator" component={SelectEvaluatorScreen} options={{headerShown: false}} />
       <HomeStack.Screen name="InfoScreen" component={InfoScreen} options={{headerShown: false}}/>
@@ -63,17 +68,11 @@ export default function HomeStackNavigator () {
       <HomeStack.Screen name="ObjectIdentificationIntroScreen" component={ObjectIdentificationIntroScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="RepeatSentenceIntroScreen" component={RepeatSentenceIntroScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="RepeatSentenceQuestionScreen" component={RepeatSentenceQuestionScreen} options={{headerShown: false}}/>
-
-
-
-
-
-
-
-      
-
-
-
+      <HomeStack.Screen name="ReadInstructionQuestionScreen" component={ReadInstructionQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="ReadInstructionIntroScreen" component={ReadInstructionIntroScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="SayInstructionIntroScreen" component={SayInstructionIntroScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="SayInstructionQuestionScreen" component={SayInstructionQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="WriteSencetenceQuestionScreen" component={WriteSencetenceQuestionScreen} options={{headerShown: false}}/>
 
     </HomeStack.Navigator>
   );

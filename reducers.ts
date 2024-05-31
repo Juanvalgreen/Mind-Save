@@ -130,10 +130,10 @@ const examSlice = createSlice({
     setLanguageRepeatSentence(state, action) { // 
       state.lenguage.repeatSentence = action.payload;
     },
-    setLanguageSayInstructionsQuestion(state, action) { /* Falta AI implementación*/
+    setLanguageSayInstructionsQuestion(state, action) { /* YA MOCKEADO Falta AI implementación*/
       state.lenguage.sayInstructionsQuestion = action.payload;
     },
-    setLanguageReadInstructionQuestion(state, action) { /* Falta AI implementación */
+    setLanguageReadInstructionQuestion(state, action) { /* YA MOCKEADO Falta AI implementación */
       state.lenguage.readInstructionQuestion = action.payload;
     },
     setLanguageWriteSentenceQuestion(state, action) { /* Falta AI implementación */

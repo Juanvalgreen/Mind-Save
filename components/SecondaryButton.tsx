@@ -2,7 +2,8 @@ import { Button, Pressable, StyleSheet, Text } from "react-native"
 
 type ButtonProps = {
     text: string,
-    action: Function
+    action: Function,
+    enabled?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -17,8 +18,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 24,
         elevation: 3,
-        backgroundColor: '#CCECE4',
+        backgroundColor: '#7CE9CD',
       },
+    disabledButton: {
+        backgroundColor: '#85B4A8',
+    },
       secondaryTextButton: {
         fontSize: 16,
         lineHeight: 21,
@@ -30,10 +34,10 @@ const styles = StyleSheet.create({
 });
 
 
-export default function SecondaryButton({text, action} : ButtonProps){
+export default function SecondaryButton({text, action, enabled = true } : ButtonProps){
 
     return(
-        <Pressable style = {styles.secondaryButton} onPress={action()}>
+        <Pressable style = {[styles.secondaryButton, !enabled && styles.disabledButton]} onPress={enabled ? action() : null}>
             <Text style = {styles.secondaryTextButton}>{text}</Text>
         </Pressable>
     )
