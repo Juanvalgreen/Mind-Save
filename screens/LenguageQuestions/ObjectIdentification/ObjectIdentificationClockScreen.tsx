@@ -14,7 +14,7 @@ import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../../components/PrimaryButton";
 
 import { progressActions } from "../../../reducers";
-import { incrementValue } from "../../../constants";
+import { incrementValue } from "../../../constants/constants";
 
 
 

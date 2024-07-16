@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import SecondaryButton from "../../../components/SecondaryButton";
 import { progressActions } from "../../../reducers";
 import { GlobalState } from "../../../types/types";
-import { incrementValue } from "../../../constants";
+import { incrementValue } from "../../../constants/constants";
 import YesButton from "../../../components/YesButton";
 import NoButton from "../../../components/NoButton";
 import { Camera } from "expo-camera";
@@ -38,7 +38,12 @@ const styles = StyleSheet.create({
     cam: {
         flex: 1,
         borderRadius: 24,
-    }
+    },
+    isEnable: {
+        borderColor: '#7CE9CD',
+        borderWidth:3
+
+    },
 });
 
 export default function ReadInstructionQuestionScreen() {
@@ -76,7 +81,6 @@ export default function ReadInstructionQuestionScreen() {
             setVideo(recordedVideo);
         });
 
-        console.log('wow');
     };
 
     let stopRecording = () => {
@@ -101,14 +105,14 @@ export default function ReadInstructionQuestionScreen() {
             <Header />
             <View style={styles.questionContainer}>
                 <QuestionTitle text='Cierre los ojos durante unos segundos' />
-                <View style={styles.inputContainer}>
+                <View style={[styles.inputContainer, isButtonEnabled && styles.isEnable]}>
                     <Camera 
                         ref={cameraRef} 
                         style={styles.cam}
                         type={Camera.Constants.Type.front} 
                     />
                 </View>
-                <SecondaryButton text="Siguiente" action={() => handleContinue} enabled={isButtonEnabled} />
+                {isButtonEnabled && <SecondaryButton text="Siguiente" action={() => handleContinue} ></SecondaryButton>}
             </View>
         </View>
     );

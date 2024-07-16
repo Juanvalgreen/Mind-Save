@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import SecondaryButton from "../../components/SecondaryButton";
 import { progressActions } from "../../reducers";
 import { GlobalState } from "../../types/types";
-import { incrementValue } from "../../constants";
+import { incrementValue } from "../../constants/constants";
 
 
 const styles = StyleSheet.create({
@@ -49,14 +49,15 @@ export default function WriteSencetenceQuestionScreen(){
 
 
     const submit = () => {
-        navigation.navigate("InfoScreen");
 
         dispatch({
             type: 'examInfo/setLanguageWriteSentenceQuestion',
-            payload: answer
+            payload: 1
         });
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
+
+        navigation.navigate("InfoScreen");
     }
 
     

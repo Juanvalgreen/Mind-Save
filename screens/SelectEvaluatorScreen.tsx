@@ -10,6 +10,7 @@ import QuestionText from "../components/QuestionText";
 import Header from "../components/Header";
 import { GlobalState, UserInfo } from "../types/types";
 import { progressActions } from "../reducers";
+import getCurrentDate from "../utils/string";
   
 const styles = StyleSheet.create({
     container: {
@@ -37,11 +38,14 @@ export default function SelectEvaluatorScreen() {
       navigation.navigate("NameInputScreen");
 
       dispatch(progressActions.actions.setTotalProgress(0.001));
+      dispatch({
+            type: 'examInfo/setApplicationDate',
+            payload: getCurrentDate()
+        });
+
     };
   
-    const navigateInfo = () => {
-      navigation.navigate("InfoScreen");
-    };
+
 
     
 
@@ -56,7 +60,7 @@ export default function SelectEvaluatorScreen() {
                 <QuestionText text='Escoge una opción' ></QuestionText>
 
                 <PrimaryButton text="Yo mismo" action={() => nameInput} ></PrimaryButton>
-                <SecondaryButton text="Evaluaré a alguien más" action={() => InfoScreen} ></SecondaryButton>
+                <SecondaryButton text="Evaluaré a alguien más" action={() => nameInput} ></SecondaryButton>
             </View>
         </View>
     );

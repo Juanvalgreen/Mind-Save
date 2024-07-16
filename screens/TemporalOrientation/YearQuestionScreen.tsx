@@ -8,7 +8,7 @@ import QuestionTitle from "../../components/QuestionTitle";
 import RNPickerSelect from 'react-native-picker-select';
 import { GlobalState, optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
-import { incrementValue } from "../../constants";
+import { incrementValue } from "../../constants/constants";
 import { progressActions } from "../../reducers";
 
 

@@ -7,7 +7,7 @@ import QuestionTitle from "../../../components/QuestionTitle";
 import { Audio } from 'expo-av';
 import QuestionText from "../../../components/QuestionText";
 import { progressActions } from "../../../reducers";
-import { incrementValue } from "../../../constants";
+import { incrementValue } from "../../../constants/constants";
 
 import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../../components/PrimaryButton";

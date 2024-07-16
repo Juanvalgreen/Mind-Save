@@ -9,7 +9,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import SecondaryButton from "../../components/SecondaryButton";
 import { GlobalState, optionsSelect } from "../../types/types";
 import { useForegroundPermissions } from "expo-location";
-import { incrementValue } from "../../constants";
+import { incrementValue } from "../../constants/constants";
 import { progressActions } from "../../reducers";
 
 const countriesArray: string[] = [

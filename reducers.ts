@@ -136,7 +136,7 @@ const examSlice = createSlice({
     setLanguageReadInstructionQuestion(state, action) { /* YA MOCKEADO Falta AI implementación */
       state.lenguage.readInstructionQuestion = action.payload;
     },
-    setLanguageWriteSentenceQuestion(state, action) { /* Falta AI implementación */
+    setLanguageWriteSentenceQuestion(state, action) { /* YA MOCKEADO Falta AI implementación */
       state.lenguage.writeSenteceQuestion = action.payload;
     },
     setLanguageDrawQuestion(state, action) { /* Falta adaptación */

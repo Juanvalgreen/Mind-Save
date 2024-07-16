@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { progressActions } from "../../reducers";
 import { GlobalState } from "../../types/types";
-import { incrementValue } from "../../constants";
+import { incrementValue } from "../../constants/constants";
 
 const styles = StyleSheet.create({
   container: {

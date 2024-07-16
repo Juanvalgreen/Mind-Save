@@ -6,7 +6,7 @@ import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
 import { Audio } from 'expo-av';
 import QuestionText from "../../components/QuestionText";
-import { incrementValue } from "../../constants";
+import { incrementValue } from "../../constants/constants";
 import { progressActions } from "../../reducers";
 
 
