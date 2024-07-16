@@ -5,7 +5,6 @@ import { BASE_URL } from "../constants/API";
 console.log('BASE_URL:', BASE_URL);
 
 export const postNewExam = async (dataToSend: any) => {
-    console.log('Inside postNewExam:', dataToSend);
     try {
         const response = await fetch(`${BASE_URL}/exams`, {
             method: 'POST',
@@ -21,5 +20,4 @@ export const postNewExam = async (dataToSend: any) => {
         console.log('Error creating exam:', e);
     }
 
-  console.log('Data to send after fetch:', dataToSend);
 }

@@ -17,7 +17,6 @@ export default function InfoScreen() {
                 userInfo: userInfo,
                 examInfo: examInfo,
             };
-            console.log('Data being sent:', dataToSend);
             postNewExam(dataToSend)
         }
     

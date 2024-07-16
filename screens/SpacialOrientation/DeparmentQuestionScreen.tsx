@@ -21,7 +21,8 @@ const deparmentsArray: string[] = [
     "Cundinamarca",
     "Valle del Cauca",
     "Vaupés",
-    "Vichada"
+    "Vichada",
+    "Huila"
 ];
 
 const styles = StyleSheet.create({
@@ -96,7 +97,7 @@ export default function DeparmentQuestionScreen(){
 
     const onSubmit = () => {
 
-        const actualCountry = 'Valle del Cauca'; 
+        const actualCountry = 'Huila'; 
         if(answer === actualCountry){
 
             dispatch({

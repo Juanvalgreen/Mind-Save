@@ -25,7 +25,8 @@ const cityArray: string[] = [
     "Santa Marta",
     "Ibagué",
     "Soacha",
-    "Villavicencio"
+    "Villavicencio",
+    "Neiva"
 ];
 
 const styles = StyleSheet.create({
@@ -100,7 +101,7 @@ export default function CityQuestionScreen(){
 
     const onSubmit = () => {
 
-        const actualCountry = 'Cali'; 
+        const actualCountry = 'Neiva'; 
         if(answer === actualCountry){
 
             dispatch({
