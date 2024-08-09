@@ -12,6 +12,8 @@ import { Camera, CameraType, CameraCapturedPicture } from "expo-camera";
 import { eyesValidate } from "../../../services/vertex";
 import { CORRECT_CONDITION } from "../../../constants";
 
+import * as ImageManipulator from 'expo-image-manipulator';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -82,9 +84,9 @@ export default function ReadInstructionQuestionScreen() {
         return () => clearTimeout(timer);
     }, [cameraReady]);
 
-    const takePictureWithTimeout = async (timeout = 1000) => {
+    const takePictureWithTimeout = async (timeout = 3000) => {
         return Promise.race([
-            cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, exif: false }),
+            cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, exif: false, scale: 0  }),
             new Promise((_, reject) => 
                 setTimeout(() => reject(new Error('Timeout')), timeout)
             )
@@ -94,15 +96,21 @@ export default function ReadInstructionQuestionScreen() {
     const takePicture = async () => {
         if (cameraRef.current && cameraRef.current.takePictureAsync) {
             try {
-                // await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
                 console.log("Antes de takePictureAsync");
                 const photo: CameraCapturedPicture = await takePictureWithTimeout();
                 console.log("Después de takePictureAsync");
-                console.log("Longitud de base64:", photo.base64.length);
 
                 if (photo.base64) {
+
+                    const resizedImage = await ImageManipulator.manipulateAsync(
+                        photo.uri,
+                        [{ resize: { width: 640 } }], // Ajusta el ancho a 640 píxeles
+                        { compress: 0.5, base64: true }
+                    );
+                    
+                    console.log("Longitud de base64:", resizedImage.base64.length);
                     try {
-                        const {response} = await eyesValidate(photo.base64);
+                        const {response} = await eyesValidate(resizedImage.base64);
                         console.log('Response desde el componente', response);
                         setIsButtonEnabled(true);
 
@@ -154,6 +162,7 @@ export default function ReadInstructionQuestionScreen() {
                         style={styles.cam}
                         type={CameraType.front}
                         onCameraReady={handleCameraReady}
+                        
                     />
                 </View>
                 {isButtonEnabled && <SecondaryButton text="Siguiente" action={() => handleContinue} />}

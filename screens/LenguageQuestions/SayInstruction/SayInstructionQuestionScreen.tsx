@@ -12,6 +12,9 @@ import { Camera, CameraType, CameraCapturedPicture } from "expo-camera";
 import { CORRECT_CONDITION } from "../../../constants";
 import { handUpValidate } from "../../../services/vertex";
 
+import * as ImageManipulator from 'expo-image-manipulator';
+
+
 
 const styles = StyleSheet.create({
 
@@ -89,9 +92,9 @@ export default function SayInstructionQuestionScreen(){
     }, [cameraReady]);
 
 
-    const takePictureWithTimeout = async (timeout = 1000) => {
+    const takePictureWithTimeout = async (timeout = 3000) => {
         return Promise.race([
-            cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, exif: false }),
+            cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, exif: false, scale: 0 }),
             new Promise((_, reject) => 
                 setTimeout(() => reject(new Error('Timeout')), timeout)
             )
@@ -101,15 +104,21 @@ export default function SayInstructionQuestionScreen(){
     const takePicture = async () => {
         if (cameraRef.current && cameraRef.current.takePictureAsync) {
             try {
-                // await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
                 console.log("Antes de takePictureAsync");
                 const photo: CameraCapturedPicture = await takePictureWithTimeout();
                 console.log("Después de takePictureAsync");
-                console.log("Longitud de base64:", photo.base64.length);
 
                 if (photo.base64) {
+                    
+                    const resizedImage = await ImageManipulator.manipulateAsync(
+                        photo.uri,
+                        [{ resize: { width: 640 } }], // Ajusta el ancho a 640 píxeles
+                        { compress: 0.5, base64: true }
+                    );                    
+                    
+                    console.log("Longitud de base64:", resizedImage.base64.length);
                     try {
-                        const {response} = await handUpValidate(photo.base64);
+                        const {response} = await handUpValidate(resizedImage.base64);
                         console.log('Response desde el componente', response);
                         setIsButtonEnabled(true);
                         
@@ -160,7 +169,7 @@ export default function SayInstructionQuestionScreen(){
             <Image source={require('../../../assets/camera.png')} style={styles.logoCamera} />
             
             <View style={styles.questionContainer}>
-                <QuestionTitle text='Siga la instrucción que escucho' />
+                <QuestionTitle text='Siga la instrucción que escuchó' />
                 <View style={[styles.inputContainer, isButtonEnabled && styles.isEnable]}>
                     <Camera 
                         ref={cameraRef} 
