@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 18,
         fontWeight: '400'
+    },
+    logoMicro: {
+        margin: 20
     }
 
 });
@@ -58,8 +61,6 @@ const styles = StyleSheet.create({
 
 
 
-
-// TODO: Should refactor when the spike of speech recognition its done
 export default function ObjectIdentificationClockScreen(){
     
     const dispatch = useDispatch();
@@ -157,8 +158,9 @@ export default function ObjectIdentificationClockScreen(){
     return(
         <View style={styles.container}>
             <Header></Header>
+            {isRecording && <Image source={require('../../../assets/microphone.png')} style={styles.logoMicro}/>}
+
             
-            <Text>{voiceResult}</Text>
             <View style={styles.questionContainer}>
 
 
@@ -171,7 +173,7 @@ export default function ObjectIdentificationClockScreen(){
                     {/*Should refactor with proper logic*/}
                 </View>
 
-                {!voiceResult && <PrimaryButton text="Listo" action={() => startRecording} />}
+                {!voiceResult && !isRecording && <PrimaryButton text="Listo" action={() => startRecording} />}
                 {voiceResult && <SecondaryButton text="Siguiente" action={() => handleContinue} />}
 
 

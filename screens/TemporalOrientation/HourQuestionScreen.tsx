@@ -10,6 +10,7 @@ import { GlobalState, optionsSelect } from "../../types/types";
 import SecondaryButton from "../../components/SecondaryButton";
     import { incrementValue } from "../../constants/constants";
 import { progressActions } from "../../reducers";
+import QuestionText from "../../components/QuestionText";
 
 
 
@@ -54,65 +55,62 @@ const styles = StyleSheet.create({
 const generateHoursArray = () : Array<optionsSelect> => {
     const currentHour = new Date().getHours();
     const hours: Array<optionsSelect> = [];
-  
-    
-    for (let i = 0; i < 9; i++) {
-        const randomHour = Math.floor(Math.random() * (24));
-        hours.push({ label: `${randomHour}:00`, value: randomHour });
-    }
-  
-    
+
+    // Add the current hour, the next hour, and the previous hour
+    const prevHour = (currentHour - 1 + 24) % 24;
+    const nextHour = (currentHour + 1) % 24;
+
+    hours.push({ label: `${prevHour}:00`, value: prevHour });
     hours.push({ label: `${currentHour}:00`, value: currentHour });
-  
-   
+    hours.push({ label: `${nextHour}:00`, value: nextHour });
+
+    // Fill the rest of the array with random hours
+    while (hours.length < 9) {
+        const randomHour = Math.floor(Math.random() * 24);
+        // Ensure no duplicate hours
+        if (!hours.some(hour => hour.value === randomHour)) {
+            hours.push({ label: `${randomHour}:00`, value: randomHour });
+        }
+    }
+
+    // Shuffle the array to make the correct hour not too obvious
     hours.sort(() => Math.random() - 0.5);
-  
+
     return hours;
 };
 
 
+const findClosestHour = (selectedHour: number, currentHour: number): boolean => {
+    const nextHour = (currentHour + 1) % 24;
+    const prevHour = (currentHour - 1 + 24) % 24;
 
+    return selectedHour === currentHour || selectedHour === nextHour || selectedHour === prevHour;
+};
 
-export default function HourQuestionScreen(){
+export default function HourQuestionScreen() {
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
     const [answer, setAnswer] = useState<number>(0);
-    const [options, setOptions] = useState<optionsSelect[]>([])
+    const [options, setOptions] = useState<optionsSelect[]>([]);
 
     useEffect(() => {
         setOptions(generateHoursArray());
-
-        
-    }, [])
-
+    }, []);
 
     const onSubmit = () => {
+        const actualHour = new Date().getHours();
+        const isCorrect = findClosestHour(answer, actualHour);
 
-        const actualHour = new Date().getHours(); 
-        if(answer === actualHour){
-
-            dispatch({
-                type: 'examInfo/setOrientationHourQuestion',
-                payload: 1
-            });
-
-        } else {
-            dispatch({
-                type: 'examInfo/setOrientationHourQuestion',
-                payload: 0
-            });
-        }
+        dispatch({
+            type: 'examInfo/setOrientationHourQuestion',
+            payload: isCorrect ? 1 : 0
+        });
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
-        
         navigation.navigate("MonthQuestionScreen");
-
-    }
-
-
+    };
 
 
 
@@ -124,6 +122,7 @@ export default function HourQuestionScreen(){
                 <View style={styles.title}>
 
                     <QuestionTitle  text="¿Aproximadamente que horas son?"></QuestionTitle>
+                    <QuestionText  text="Escoga la hora más cercana"></QuestionText>
                 </View>
 
                 <View style={styles.inputContainer}>
@@ -165,5 +164,3 @@ const pickerSelectStyles = StyleSheet.create({
         paddingRight: 30 // to ensure the text is never behind the icon
     }
 });
-
-

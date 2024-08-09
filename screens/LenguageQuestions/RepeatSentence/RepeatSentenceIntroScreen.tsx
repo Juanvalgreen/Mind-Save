@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
 
 });
 
-// TODO: Should refactor when the spike of speech recognition its done
 
 export default function RepeatSentenceIntroScreen(){
     const [sound, setSound] = useState<any>();

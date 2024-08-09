@@ -10,6 +10,8 @@ import SecondaryButton from "../../components/SecondaryButton";
 import { progressActions } from "../../reducers";
 import { GlobalState } from "../../types/types";
 import { incrementValue } from "../../constants/constants";
+import { CORRECT_CONDITION } from "../../constants";
+import { sentenceValidate } from "../../services/vertex";
 
 
 const styles = StyleSheet.create({
@@ -39,25 +41,43 @@ const styles = StyleSheet.create({
 
 });
 
-//TODO: Should be refactro
 export default function WriteSencetenceQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress)
 
     const [answer, setAnswer] = useState<string>('');
+    const [correctAnswer, setCorrectAnswer] = useState(false);
+    const [loading,setLoading]=  useState(false);
 
 
-    const submit = () => {
+    const submit = async () => {
+
+        try {
+            setLoading(true)
+            const {response} = await sentenceValidate(answer);
+            console.log('Response desde el componente', response);
+
+
+            if (response && typeof response === 'string' && CORRECT_CONDITION.some(el => response.toLowerCase().includes(el))) {
+                console.log('oracion con sentido');
+                setCorrectAnswer(true);
+            }
+        } catch (error) {
+            console.error("Error en la validación:", error);
+        }finally{
+            setLoading(false)
+        }
 
         dispatch({
             type: 'examInfo/setLanguageWriteSentenceQuestion',
-            payload: 1
+            payload: correctAnswer ? 1 : 0
         });
+
 
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
-        navigation.navigate("InfoScreen");
+        navigation.navigate("DrawShapeIntroScreen");
     }
 
     
@@ -73,12 +93,11 @@ export default function WriteSencetenceQuestionScreen(){
             
                 <TextInput onChangeText={(text) => setAnswer(text)} theme={{ colors: { onSurface: "white"}}}  style={styles.input} placeholderTextColor='white' placeholder="Frase" ></TextInput>
 
-                {answer ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
+                {answer && !loading ? <SecondaryButton text="Siguiente" action={() => submit}></SecondaryButton> : null}
 
             </View>
         </View>
 
     );
-
-
 }
+

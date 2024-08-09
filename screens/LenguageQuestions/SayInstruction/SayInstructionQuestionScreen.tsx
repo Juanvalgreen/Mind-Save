@@ -1,8 +1,6 @@
-import { SetStateAction, useEffect, useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import QuestionText from "../../../components/QuestionText";
+import { useEffect, useRef, useState } from "react";
+import { View, StyleSheet,Image } from "react-native";
 import QuestionTitle from "../../../components/QuestionTitle";
-import { TextInput, Text } from "react-native-paper";
 import Header from "../../../components/Header";
 import { useDispatch, useSelector} from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -10,10 +8,9 @@ import SecondaryButton from "../../../components/SecondaryButton";
 import { progressActions } from "../../../reducers";
 import { GlobalState } from "../../../types/types";
 import { incrementValue } from "../../../constants/constants";
-import YesButton from "../../../components/YesButton";
-import NoButton from "../../../components/NoButton";
-import { Camera } from "expo-camera";
-import PrimaryButton from "../../../components/PrimaryButton";
+import { Camera, CameraType, CameraCapturedPicture } from "expo-camera";
+import { CORRECT_CONDITION } from "../../../constants";
+import { handUpValidate } from "../../../services/vertex";
 
 
 const styles = StyleSheet.create({
@@ -46,6 +43,9 @@ const styles = StyleSheet.create({
         borderWidth:3
 
     },
+    logoCamera: {
+        margin: 20
+    }
 
 });
 
@@ -54,51 +54,92 @@ export default function SayInstructionQuestionScreen(){
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
-    const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-    let cameraRef = useRef(null);   
-    const [video,setVideo] = useState();
+    const cameraRef = useRef<Camera>(null);   
+    const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+    const [cameraReady, setCameraReady] = useState(false);
+    const [correctAnswer, setCorrectAnswer] = useState(false);
+
 
     useEffect(() => {
         (async () => {
-            await Camera.requestCameraPermissionsAsync();
-            await Camera.requestMicrophonePermissionsAsync();
+            const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
+            const { status: microphoneStatus } = await Camera.requestMicrophonePermissionsAsync();
+            if (cameraStatus !== 'granted' || microphoneStatus !== 'granted') {
+                console.log("Permisos no otorgados");
+                return;
+            } else {
+                console.log("Permisos otorgados");
+            }
         })();
 
-
-        const timer = setTimeout(() => {
-            setIsButtonEnabled(true);
-        }, 5500);
+        const timer = setTimeout(async () => {
+            if (cameraReady && cameraRef.current) {
+                try {
+                    await takePicture();
+                } catch (error) {
+                    console.error("Error en el proceso de toma de foto:", error);
+                }
+            } else {
+                console.log("Referencia de la cámara no disponible o cámara no lista");
+            }
+        }, 6000); // Aumentado a 8 segundos
 
         return () => clearTimeout(timer);
+    }, [cameraReady]);
 
-    }, []);
 
-
-  let recordVideo = () => {
-        let options = {
-        quality: "1080p",
-        maxDuration: 60,
-        mute: false
-        };
-
-        cameraRef.current.recordAsync(options).then((recordedVideo : any) => {
-            setVideo(recordedVideo);
-        });
-
-        console.log('wow')
-
+    const takePictureWithTimeout = async (timeout = 1000) => {
+        return Promise.race([
+            cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, exif: false }),
+            new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout')), timeout)
+            )
+        ]);
     };
 
-    let stopRecording = () => {
-        cameraRef.current.stopRecording();
-        console.log(video);
+    const takePicture = async () => {
+        if (cameraRef.current && cameraRef.current.takePictureAsync) {
+            try {
+                // await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
+                console.log("Antes de takePictureAsync");
+                const photo: CameraCapturedPicture = await takePictureWithTimeout();
+                console.log("Después de takePictureAsync");
+                console.log("Longitud de base64:", photo.base64.length);
+
+                if (photo.base64) {
+                    try {
+                        const {response} = await handUpValidate(photo.base64);
+                        console.log('Response desde el componente', response);
+                        setIsButtonEnabled(true);
+                        
+                        if (response && typeof response === 'string' && CORRECT_CONDITION.some(el => response.toLowerCase().includes(el))) {
+                            console.log('levanto la mano');
+                            setCorrectAnswer(true);
+                        }
+                    } catch (error) {
+                        console.error("Error en la validación:", error);
+                    }
+                } else {
+                    console.log("La foto no tiene datos base64");
+                }
+            } catch (error) {
+                console.error("Error específico en takePictureAsync:", error);
+            }
+        } else {
+            console.log("takePictureAsync no está disponible en cameraRef.current");
+        }
     };
 
-
+    const handleCameraReady = () => {
+        console.log("Cámara lista");
+        setCameraReady(true);
+    };
     
 
     const handleContinue = () => {
+
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         
         dispatch({
@@ -106,39 +147,29 @@ export default function SayInstructionQuestionScreen(){
             payload: 1
         });
         
-        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         navigation.navigate("WriteSencetenceQuestionScreen");
-
         
     }
-
-
-
 
     
 
     return (
         <View style={styles.container}>
+            <Header />
+            <Image source={require('../../../assets/camera.png')} style={styles.logoCamera} />
             
-            <Header></Header>
             <View style={styles.questionContainer}>
                 <QuestionTitle text='Siga la instrucción que escucho' />
-
-
                 <View style={[styles.inputContainer, isButtonEnabled && styles.isEnable]}>
-
                     <Camera 
-                    ref={cameraRef} 
-                    style={styles.cam}
-                    type={Camera.Constants.Type.front} >
-                    </Camera>
-
-
+                        ref={cameraRef} 
+                        style={styles.cam}
+                        type={CameraType.front}
+                        onCameraReady={handleCameraReady}
+                    />
                 </View>
-
-                {isButtonEnabled && <SecondaryButton text="Siguiente" action={() => handleContinue} ></SecondaryButton>}
-
+                {isButtonEnabled && <SecondaryButton text="Siguiente" action={() => handleContinue} />}
             </View>
         </View>
 

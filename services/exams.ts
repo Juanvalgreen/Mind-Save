@@ -6,7 +6,7 @@ console.log('BASE_URL:', BASE_URL);
 
 export const postNewExam = async (dataToSend: any) => {
     try {
-        const response = await fetch(`${BASE_URL}/exams`, {
+        const response = await fetch(`${BASE_URL}/api/exams`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -16,6 +16,7 @@ export const postNewExam = async (dataToSend: any) => {
         });
         const data = await response.json();
         console.log('Exam successfully created:', data);
+        return data;
     } catch (e) {
         console.log('Error creating exam:', e);
     }

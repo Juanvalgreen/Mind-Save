@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserInfo, ExamInfo, GlobalState } from './types/types'; // Import your type definitions
+import { UserInfo, ExamInfo, GlobalState, AnalysisState } from './types/types'; // Import your type definitions
 
 const initialState: GlobalState = {
   userInfo: {
@@ -19,14 +19,14 @@ const initialState: GlobalState = {
       countryQuestion: 0,
       regionQuestion: 0,
       cityQuestion: 0,
-      whereWeAreQuestion: 0,
-      floorQuestion: 0
+      whereWeAreQuestion: 1,
+      floorQuestion: 1
     },
     fixation: {
       repeatWordsQuestion: 0
     },
     calcAttention: {
-      minusSequenceQuestion: 0,
+      mathSequenceQuestion: 0,
       spellingQuestion: 0
     },
     memory: {
@@ -38,14 +38,50 @@ const initialState: GlobalState = {
       sayInstructionsQuestion: 0,
       readInstructionQuestion: 0,
       writeSenteceQuestion: 0,
-      drawQuestion: 0
+      drawQuestion: 1
     },
     applicationDate: '',
     itAutoEvaluation: true,
   },
   totalProgress: 0,
-  examSection: 'Preguntas demográficas'
+  examSection: 'Preguntas demográficas',
+  analysis : {
+    patientInfo: {
+      name: '',
+      age: 0,
+    },
+    examResults: {
+      orientation: {
+        score: 0,
+        analysis: '',
+      },
+      fixation: {
+        score: 0,
+        analysis: '',
+      },
+      calcAttention: {
+        score: 0,
+        analysis: '',
+      },
+      memory: {
+        score: 0,
+        analysis: '',
+      },
+      language: {
+        score: 0,
+        analysis: '',
+      },
+    },
+    totalScore: {
+      score: 0,
+      analysis: '',
+    },
+    recommendations: [],
+  }
 };
+
+
+
 
 const userSlice = createSlice({
   name: 'userInfo',
@@ -98,7 +134,7 @@ const examSlice = createSlice({
     setOrientationCityQuestion(state, action) { //
       state.orientation.cityQuestion = action.payload;
     },
-    setOrientationWhereWeAreQuestion(state, action) { //
+    setOrientationWhereWeAreQuestion(state, action) { /* Falta adaptación*/
       state.orientation.whereWeAreQuestion = action.payload;
     },
     setOrientationFloorQuestion(state, action) { /* Falta adaptación */
@@ -112,7 +148,7 @@ const examSlice = createSlice({
     
     // CalcAttention
     setCalcAttentionMinusSequenceQuestion(state, action) { //
-      state.calcAttention.minusSequenceQuestion = action.payload;
+      state.calcAttention.mathSequenceQuestion = action.payload;
     },
     setCalcAttentionSpellingQuestion(state, action) { //
       state.calcAttention.spellingQuestion = action.payload;
@@ -130,16 +166,16 @@ const examSlice = createSlice({
     setLanguageRepeatSentence(state, action) { // 
       state.lenguage.repeatSentence = action.payload;
     },
-    setLanguageSayInstructionsQuestion(state, action) { /* YA MOCKEADO Falta AI implementación*/
+    setLanguageSayInstructionsQuestion(state, action) { //
       state.lenguage.sayInstructionsQuestion = action.payload;
     },
-    setLanguageReadInstructionQuestion(state, action) { /* YA MOCKEADO Falta AI implementación */
+    setLanguageReadInstructionQuestion(state, action) { //
       state.lenguage.readInstructionQuestion = action.payload;
     },
-    setLanguageWriteSentenceQuestion(state, action) { /* YA MOCKEADO Falta AI implementación */
+    setLanguageWriteSentenceQuestion(state, action) { //
       state.lenguage.writeSenteceQuestion = action.payload;
     },
-    setLanguageDrawQuestion(state, action) { /* Falta adaptación */
+    setLanguageDrawQuestion(state, action) { /* Falta confirmacion YA MOCKEADO */
       state.lenguage.drawQuestion = action.payload;
     },
     
@@ -167,14 +203,25 @@ const progressSlice = createSlice({
 });
 
 const examSectionSlice = createSlice({
-    name: 'examSection',
+  name: 'examSection',
   initialState: initialState.examSection,
   reducers: {
     setExamSection(state, action) {
       return action.payload
     }
   },
-})
+});
+
+const analysisSlice = createSlice({
+  name: 'analysis',
+  initialState: initialState.analysis,
+  reducers: {
+
+    setRecommendations(state, action) {
+      state.recommendations = action.payload
+    },
+  },
+});
 
 
 
@@ -183,3 +230,5 @@ export const userReducer = userSlice.reducer;
 export const examReducer = examSlice.reducer;
 export const progressReducer = progressSlice.reducer;
 export const examSectionReducer = examSectionSlice.reducer;
+export const analysisReducer = analysisSlice.reducer;
+export const analysisActions =analysisSlice;

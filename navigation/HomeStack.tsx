@@ -32,6 +32,10 @@ import ReadInstructionIntroScreen from '../screens/LenguageQuestions/ReadInstruc
 import SayInstructionIntroScreen from '../screens/LenguageQuestions/SayInstruction/SayInstructionIntroScreen';
 import SayInstructionQuestionScreen from '../screens/LenguageQuestions/SayInstruction/SayInstructionQuestionScreen';
 import WriteSencetenceQuestionScreen from '../screens/LenguageQuestions/WriteSencetenceQuestionScreen';
+import DrawShapeQuestionScreen from '../screens/LenguageQuestions/DrawShape/DrawShapeQuestionScreen';
+import DrawShapeIntroScreen from '../screens/LenguageQuestions/DrawShape/DrawShapeIntroScreen';
+import ResultsScreen from '../screens/ResultsScreen';
+import RecommendationScreen from '../screens/RecommendationsScreen';
 
 
 
@@ -73,6 +77,14 @@ export default function HomeStackNavigator () {
       <HomeStack.Screen name="SayInstructionIntroScreen" component={SayInstructionIntroScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="SayInstructionQuestionScreen" component={SayInstructionQuestionScreen} options={{headerShown: false}}/>
       <HomeStack.Screen name="WriteSencetenceQuestionScreen" component={WriteSencetenceQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="DrawShapeQuestionScreen" component={DrawShapeQuestionScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="DrawShapeIntroScreen" component={DrawShapeIntroScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="ResultsScreen" component={ResultsScreen} options={{headerShown: false}}/>
+      <HomeStack.Screen name="RecommendationScreen" component={RecommendationScreen} options={{headerShown: false}}/>
+
+
+
+
 
     </HomeStack.Navigator>
   );

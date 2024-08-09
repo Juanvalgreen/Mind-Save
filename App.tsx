@@ -6,13 +6,17 @@ import store from './store';
 
 
 import RootNavigator from './navigation/Index';
+import { registerRootComponent } from 'expo';
+
+import { LogBox } from 'react-native';
+
 
 
 export default function App() { 
-
+LogBox.ignoreAllLogs();
   return (
     
-    <Provider store={store}>
+    <Provider store={store} >
 
       <RootNavigator/>
       
@@ -21,4 +25,8 @@ export default function App() {
       // <StatusBar style="auto" />
   )
 }; 
+
+registerRootComponent(App);
+
+
 

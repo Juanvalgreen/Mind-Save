@@ -25,7 +25,7 @@ export type ExamInfo = {
         repeatWordsQuestion: number
     },
     calcAttention: {
-        minusSequenceQuestion: number,
+        mathSequenceQuestion: number,
         spellingQuestion: number
     },
     memory: {
@@ -50,6 +50,7 @@ export type GlobalState = {
     examInfo: ExamInfo,
     totalProgress: number
     examSection: string
+    analysis: AnalysisState
 };
 
 // Define el tipo del contexto
@@ -57,6 +58,48 @@ export type GlobalStateContextType = {
   state: GlobalState;
   setState: React.Dispatch<React.SetStateAction<GlobalState>>;
 };
+
+export type PatientInfo = {
+  name: string;
+  age: number;
+}
+
+export type ExamResults = {
+  orientation: {
+    score: number;
+    analysis: string;
+  };
+  fixation: {
+    score: number;
+    analysis: string;
+  };
+  calcAttention: {
+    score: number;
+    analysis: string;
+  };
+  memory: {
+    score: number;
+    analysis: string;
+  };
+  language: {
+    score: number;
+    analysis: string;
+  };
+}
+
+export type TotalScore = {
+  score: number;
+  analysis: string;
+}
+
+export type AnalysisState = {
+  patientInfo: PatientInfo;
+  examResults: ExamResults;
+  totalScore: TotalScore;
+  recommendations: string[];
+}
+
+
 
 export type optionsSelect= { 
     label: string;

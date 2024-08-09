@@ -1,18 +1,12 @@
-import {useState, useEffect} from  "react"
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { useDispatch, useSelector} from "react-redux";
+import {useState, } from  "react"
+import { StyleSheet, View,  } from "react-native";
 import {useNavigation} from '@react-navigation/native';
 import Header from "../../../components/Header";
 import QuestionTitle from "../../../components/QuestionTitle";
 import { Audio } from 'expo-av';
 import QuestionText from "../../../components/QuestionText";
-
-import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../../components/PrimaryButton";
 import SecondaryButton from "../../../components/SecondaryButton";
-
-
-
 
 
 const styles = StyleSheet.create({

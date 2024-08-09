@@ -50,7 +50,11 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 18,
         fontWeight: '400'
+    },
+    logoMicro: {
+        margin: 20
     }
+
 
 });
 
@@ -58,8 +62,7 @@ const styles = StyleSheet.create({
 
 
 
-// TODO: Should refactor when the spike of speech recognition its done
-export default function ObjectIdentificationQuestionScreen(){
+export default function ObjectIdentificationPencilScreen(){
     
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -108,19 +111,6 @@ export default function ObjectIdentificationQuestionScreen(){
             console.log('Voice es nulo');
         }
     }
-    
-    const stopRecording = async () => {
-        if (Voice) {
-            try {
-                await Voice.stop();
-                console.log('stop');
-            } catch (error) {
-                setError(error);
-            }
-        } else {
-            console.log('Voice es nulo');
-        }
-    }
 
     const confirmCorrectAnswer = () : number => {
 
@@ -151,10 +141,11 @@ export default function ObjectIdentificationQuestionScreen(){
     return(
         <View style={styles.container}>
             <Header></Header>
+            {isRecording && <Image source={require('../../../assets/microphone.png')} style={styles.logoMicro}/>}
+
             
             <View style={styles.questionContainer}>
                 
-                {voiceResult ? <Text>{voiceResult}</Text> : null}
 
 
                 <Image source={require('../../../assets/lapiz 1.jpg')}></Image>
@@ -164,10 +155,9 @@ export default function ObjectIdentificationQuestionScreen(){
                     <QuestionText text="¿Qué es esto?" />
                     <QuestionText text="Oprima El boton cuando este listo para decirlo"/>
                 
-                    {/*Should refactor with proper logic*/}
                 </View>
 
-                {!voiceResult && <PrimaryButton text="Listo" action={() => startRecording} />}
+                {!voiceResult && !isRecording && <PrimaryButton text="Listo" action={() => startRecording} />}
                 {voiceResult && <SecondaryButton text="Siguiente" action={() => handleContinue} />}
 
 

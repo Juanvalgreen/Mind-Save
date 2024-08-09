@@ -1,10 +1,9 @@
 import {useState, useEffect} from  "react"
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { useDispatch, useSelector} from "react-redux";
 import {useNavigation} from '@react-navigation/native';
 import Header from "../../../components/Header";
 import QuestionTitle from "../../../components/QuestionTitle";
-import { Audio } from 'expo-av';
 import QuestionText from "../../../components/QuestionText";
 import { progressActions } from "../../../reducers";
 import { incrementValue } from "../../../constants/constants";
@@ -12,6 +11,7 @@ import { incrementValue } from "../../../constants/constants";
 import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../../components/PrimaryButton";
 import { GlobalState } from "../../../types/types";
+import SecondaryButton from "../../../components/SecondaryButton";
 
 
 
@@ -49,11 +49,14 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 18,
         fontWeight: '400'
+    },
+    logoMicro: {
+        margin: 20
     }
+
 
 });
 
-// TODO: Should refactor when the spike of speech recognition its done
 
 export default function RepeatSentenceQuestionScreen(){
     const dispatch = useDispatch();
@@ -158,10 +161,10 @@ export default function RepeatSentenceQuestionScreen(){
     return(
         <View style={styles.container}>
             <Header></Header>
+            {isRecording && <Image source={require('../../../assets/microphone.png')} style={styles.logoMicro}/>}
             
             <View style={styles.questionContainer}>
 
-                {voiceResult ? <Text>{voiceResult}</Text> : null}
 
                 <View style={styles.title}>
 
@@ -173,8 +176,8 @@ export default function RepeatSentenceQuestionScreen(){
                 </View>
 
 
-                {!voiceResult && <PrimaryButton text="Empezar a repetir" action={() => startRecording}></PrimaryButton>}
-                {voiceResult && <PrimaryButton text="Siguiente" action={() => handleContinue}></PrimaryButton>}
+                {!voiceResult && !isRecording && <PrimaryButton text="Empezar a repetir" action={() => startRecording}></PrimaryButton>}
+                {voiceResult && <SecondaryButton text="Siguiente" action={() => handleContinue}></SecondaryButton>}
 
 
 

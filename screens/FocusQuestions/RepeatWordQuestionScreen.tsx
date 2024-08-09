@@ -1,66 +1,59 @@
-import {useState, useEffect} from  "react"
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { useDispatch, useSelector} from "react-redux";
-import {useNavigation} from '@react-navigation/native';
+import {useState, useEffect} from  "react";
+import { Image, StyleSheet, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 import Header from "../../components/Header";
 import QuestionTitle from "../../components/QuestionTitle";
-import { Audio } from 'expo-av';
 import QuestionText from "../../components/QuestionText";
 import { incrementValue } from "../../constants/constants";
 import { progressActions } from "../../reducers";
 
-
 import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../components/PrimaryButton";
 import { GlobalState } from "../../types/types";
-
-
-
-
+import SecondaryButton from "../../components/SecondaryButton";
 
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         backgroundColor: "#092C4C",
         justifyContent: 'space-between',
     },
     questionContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         width: '80%',
         textAlign: 'center',
-        marginBottom: 20
+        marginBottom: 20,
     },
-    inputContainer:{
+    inputContainer: {
         marginTop: 86,
         marginBottom: 48,
         borderBottomColor: 'white',
         borderBottomWidth: 1,
-        width: '70%'
+        width: '70%',
     },
-    input:{
+    input: {
         width: '100%',
     },
-    warningText:{
+    warningText: {
         marginVertical: 12,
         color: 'red',
         fontSize: 18,
-        fontWeight: '400'
+        fontWeight: '400',
+    },
+    logoMicro: {
+        margin: 20
     }
-
 });
 
-
-export default function RepeatWordQuestionScreen(){
+export default function RepeatWordQuestionScreen() {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
-
 
     const [voiceResult, setVoiceResult] = useState<string | undefined>('');
     const [error, setError] = useState<any>(null);
@@ -72,23 +65,18 @@ export default function RepeatWordQuestionScreen(){
     };
 
     Voice.onSpeechEnd = () => {
-    
         setIsRecording(false);
-        console.log('stopeed');
-    
+        console.log('stopped');
     };
 
     Voice.onSpeechError = (error) => {
-        setError(error)
+        setError(error);
         console.log(error);
     };
 
     Voice.onSpeechResults = (result) => {
-
         setVoiceResult(result.value ? result.value[0] : undefined);
-
-        console.log('results', result)
-            
+        console.log('results', result);
     };
 
     const startRecording = async () => {
@@ -102,8 +90,8 @@ export default function RepeatWordQuestionScreen(){
         } else {
             console.log('Voice es nulo');
         }
-    }
-    
+    };
+
     const stopRecording = async () => {
         if (Voice) {
             try {
@@ -115,35 +103,28 @@ export default function RepeatWordQuestionScreen(){
         } else {
             console.log('Voice es nulo');
         }
-    }
+    };
 
     const confirmCorrectAnswer = () => {
-
         let pointsCounter = 0;
 
-
-        if(voiceResult) {
-
-            voiceResult.includes('cuchara') && pointsCounter++ ;
-            voiceResult.includes('manzana') && pointsCounter++ ;
-            voiceResult.includes('bicicleta') && pointsCounter++ ;
-            
-            
-
+        if (voiceResult) {
+            voiceResult.includes('cuchara') && pointsCounter++;
+            voiceResult.includes('manzana') && pointsCounter++;
+            voiceResult.includes('bicicleta') && pointsCounter++;
         }
 
-        return pointsCounter
-    }
+        return pointsCounter;
+    };
 
     const handleContinue = () => {
-
         Voice.destroy();
 
         dispatch({
             type: "examInfo/setFixationRepeatWordsQuestion",
             payload: confirmCorrectAnswer(),
         });
-        
+
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
         dispatch({
@@ -152,42 +133,25 @@ export default function RepeatWordQuestionScreen(){
         });
 
         navigation.navigate("MinusSequenceQuestionScreen");
+    };
 
-    }
-
-
-
-    return(
+    return (
         <View style={styles.container}>
-            <Header></Header>
-            
+            <Header />
+            {isRecording && <Image source={require('../../assets/microphone.png')} style={styles.logoMicro}/>}
             <View style={styles.questionContainer}>
-
-                {voiceResult ? <Text>{voiceResult}</Text> : null}
-
                 <View style={styles.title}>
-
-                    <QuestionTitle  text="Repita las palabras que escuchó"></QuestionTitle>
-                    <QuestionText text="Cuando este listo, oprima el botón y repita las palabras">
-                    </QuestionText>
-
-
+                    <QuestionTitle text="Repita las palabras que escuchó" />
+                    <QuestionText text="Cuando este listo, oprima el botón y repita las palabras" />
                 </View>
 
-
-                {!voiceResult && <PrimaryButton text="Empezar a repetir" action={() => startRecording}></PrimaryButton>}
-                {voiceResult && <PrimaryButton text="Siguiente" action={() => handleContinue}></PrimaryButton>}
-
-
-
-
+                {!voiceResult && !isRecording && (
+                    <PrimaryButton text="Empezar a repetir" action={() => startRecording} />
+                )}
+                {voiceResult && (
+                    <SecondaryButton text="Siguiente" action={() => handleContinue} />
+                )}
             </View>
-
-
         </View>
-    )
+    );
 }
-
-
-
-

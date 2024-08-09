@@ -1,6 +1,6 @@
 
 import {useState, useEffect} from  "react"
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { useDispatch, useSelector} from "react-redux";
 import {useNavigation} from '@react-navigation/native';
 import Header from "../../../components/Header";
@@ -13,7 +13,8 @@ import QuestionText from "../../../components/QuestionText";
 import Voice from "@react-native-voice/voice";
 import PrimaryButton from "../../../components/PrimaryButton";
 
-
+import { progressActions } from "../../../reducers";
+import { incrementValue } from "../../../constants/constants";
 
 
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     title: {
         width: '80%',
         textAlign: 'center',
-        marginBottom: 20
+        marginVertical: 28
     },
     inputContainer:{
         marginTop: 86,
@@ -58,39 +59,45 @@ const styles = StyleSheet.create({
 
 
 
-export default function ObjectIdentificationIntroScreen(){
+export default function DrawShapeIntroScreen(){
     
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
+    const prevPoints = useSelector((state: GlobalState) => state.examInfo.lenguage.objectIdentificationQuestion);
 
 
+   
+    const handleContinue = () => {
 
-    const startInputs = () => {
 
-        navigation.navigate("ObjectIdentificationPencilScreen");
+    
+        dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
         
-    } 
+        navigation.navigate("DrawShapeQuestionScreen");
 
-
-
-
+    }
+    
+    
+    
+    
     return(
         <View style={styles.container}>
             <Header></Header>
             
             <View style={styles.questionContainer}>
 
+
+                <Image source={require('../../../assets/shapes.png')}></Image>
+
                 <View style={styles.title}>
 
-                    <QuestionTitle  text="Diga el nombre del objeto"></QuestionTitle>
-                    <QuestionText text="Cuando esté listo, se van a mostrar 2 objetos y debe decir el nombre de cada uno." />
-                    
-
-                    
-
+                    <QuestionTitle text="Memorice esta figura" />
+                    <QuestionText text="Tendra que dibujarla"/>
+                
                 </View>
 
-                <PrimaryButton text="Listo" action={() => startInputs} />
+                <PrimaryButton text="Listo" action={() => handleContinue} />
 
 
             </View>

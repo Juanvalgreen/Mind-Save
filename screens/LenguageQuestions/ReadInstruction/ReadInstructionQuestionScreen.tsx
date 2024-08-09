@@ -1,19 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import QuestionText from "../../../components/QuestionText";
+import { View, StyleSheet, Image } from "react-native";
 import QuestionTitle from "../../../components/QuestionTitle";
-import { TextInput, Text } from "react-native-paper";
 import Header from "../../../components/Header";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import SecondaryButton from "../../../components/SecondaryButton";
 import { progressActions } from "../../../reducers";
 import { GlobalState } from "../../../types/types";
 import { incrementValue } from "../../../constants/constants";
-import YesButton from "../../../components/YesButton";
-import NoButton from "../../../components/NoButton";
-import { Camera } from "expo-camera";
-import PrimaryButton from "../../../components/PrimaryButton";
+import { Camera, CameraType, CameraCapturedPicture } from "expo-camera";
+import { eyesValidate } from "../../../services/vertex";
+import { CORRECT_CONDITION } from "../../../constants";
 
 const styles = StyleSheet.create({
     container: {
@@ -22,14 +19,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     questionContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     inputContainer: {
         margin: 48,
-        
-
         width: '90%',
         height: '60%',
         borderRadius: 24,
@@ -41,78 +36,127 @@ const styles = StyleSheet.create({
     },
     isEnable: {
         borderColor: '#7CE9CD',
-        borderWidth:3
-
+        borderWidth: 3
     },
+    logoCamera: {
+        margin: 20
+    }
 });
+
+
 
 export default function ReadInstructionQuestionScreen() {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const prevProgress = useSelector((state: GlobalState) => state.totalProgress);
 
-    let cameraRef = useRef(null);   
-    const [video, setVideo] = useState();
+    const cameraRef = useRef<Camera>(null);   
     const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+    const [cameraReady, setCameraReady] = useState(false);
+    const [correctAnswer, setCorrectAnswer] = useState(false);
 
     useEffect(() => {
         (async () => {
-            await Camera.requestCameraPermissionsAsync();
-            await Camera.requestMicrophonePermissionsAsync();
+            const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
+            const { status: microphoneStatus } = await Camera.requestMicrophonePermissionsAsync();
+            if (cameraStatus !== 'granted' || microphoneStatus !== 'granted') {
+                console.log("Permisos no otorgados");
+                return;
+            } else {
+                console.log("Permisos otorgados");
+            }
         })();
-        
-        const timer = setTimeout(() => {
-            setIsButtonEnabled(true);
-        }, 5500);
+
+        const timer = setTimeout(async () => {
+            if (cameraReady && cameraRef.current) {
+                try {
+                    await takePicture();
+                } catch (error) {
+                    console.error("Error en el proceso de toma de foto:", error);
+                }
+            } else {
+                console.log("Referencia de la cámara no disponible o cámara no lista");
+            }
+        }, 6000); // Aumentado a 8 segundos
 
         return () => clearTimeout(timer);
+    }, [cameraReady]);
 
-
-    }, []);
-
-    let recordVideo = () => {
-        let options = {
-            quality: "1080p",
-            maxDuration: 60,
-            mute: false
-        };
-
-        cameraRef.current.recordAsync(options).then((recordedVideo: any) => {
-            setVideo(recordedVideo);
-        });
-
+    const takePictureWithTimeout = async (timeout = 1000) => {
+        return Promise.race([
+            cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, exif: false }),
+            new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout')), timeout)
+            )
+        ]);
     };
 
-    let stopRecording = () => {
-        cameraRef.current.stopRecording();
-        console.log(video);
+    const takePicture = async () => {
+        if (cameraRef.current && cameraRef.current.takePictureAsync) {
+            try {
+                // await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos
+                console.log("Antes de takePictureAsync");
+                const photo: CameraCapturedPicture = await takePictureWithTimeout();
+                console.log("Después de takePictureAsync");
+                console.log("Longitud de base64:", photo.base64.length);
+
+                if (photo.base64) {
+                    try {
+                        const {response} = await eyesValidate(photo.base64);
+                        console.log('Response desde el componente', response);
+                        setIsButtonEnabled(true);
+
+
+                        if (response && typeof response === 'string' && CORRECT_CONDITION.some(el => response.toLowerCase().includes(el))) {
+                            console.log('cerroLos ojos');
+                            setCorrectAnswer(true);
+                        }
+                    } catch (error) {
+                        console.error("Error en la validación:", error);
+                    }
+                } else {
+                    console.log("La foto no tiene datos base64");
+                }
+            } catch (error) {
+                console.error("Error específico en takePictureAsync:", error);
+            }
+        } else {
+            console.log("takePictureAsync no está disponible en cameraRef.current");
+        }
+    };
+
+    const handleCameraReady = () => {
+        console.log("Cámara lista");
+        setCameraReady(true);
     };
 
     const handleContinue = () => {
-        dispatch({
-            type: 'examInfo/setLanguageReadInstructionQuestion',
-            payload: 1
-        });
-        
         dispatch(progressActions.actions.setTotalProgress(prevProgress + incrementValue));
 
-        navigation.navigate("SayInstructionIntroScreen");
+        dispatch({
+            type: 'examInfo/setLanguageReadInstructionQuestion',
+            payload: correctAnswer ? 1 : 0 
+        });
 
+        navigation.navigate("SayInstructionIntroScreen");
     };
 
     return (
         <View style={styles.container}>
             <Header />
+            <Image source={require('../../../assets/camera.png')} style={styles.logoCamera} />
+            
             <View style={styles.questionContainer}>
                 <QuestionTitle text='Cierre los ojos durante unos segundos' />
                 <View style={[styles.inputContainer, isButtonEnabled && styles.isEnable]}>
                     <Camera 
                         ref={cameraRef} 
                         style={styles.cam}
-                        type={Camera.Constants.Type.front} 
+                        type={CameraType.front}
+                        onCameraReady={handleCameraReady}
                     />
                 </View>
-                {isButtonEnabled && <SecondaryButton text="Siguiente" action={() => handleContinue} ></SecondaryButton>}
+                {isButtonEnabled && <SecondaryButton text="Siguiente" action={() => handleContinue} />}
             </View>
         </View>
     );

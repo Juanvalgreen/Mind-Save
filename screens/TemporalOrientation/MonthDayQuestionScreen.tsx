@@ -83,8 +83,8 @@ export default function MonthDayQuestionScreen(){
     const onSubmit = () => {
 
         const actualDayMonth = new Date().getUTCDate();
-        console.log(actualDayMonth);
-        if(answer === actualDayMonth - 1 ){
+        console.log(actualDayMonth, answer);
+        if(answer === actualDayMonth){
 
             dispatch({
                 type: 'examInfo/setOrientationMonthDayQuestion',

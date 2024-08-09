@@ -1,35 +1,60 @@
-import {useEffect, useState} from "react"
-import { Text, View } from "react-native"
-import { useSelector } from "react-redux";
-import { GlobalState } from "../types/types";
-import { postNewExam } from "../services/exams";
-import PrimaryButton from "../components/PrimaryButton";
+import { Button, Text, Image, View, StyleSheet, Pressable, ImageBackground, ScrollView } from "react-native";
+import SecondaryButton from "../components/SecondaryButton";
+import { useNavigation } from "@react-navigation/native";
+import { CONSTANTS_TEXT } from "../constants";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageBackground: {
+    flex: 1,
+    width: '100%',
+    resizeMode: 'cover', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logo: {
+    marginTop: 80,
+    width: 200,
+    height:200
+  },
+  textContainer: {
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    lineHeight: 29,
+    fontWeight:'300',
+  },
+  buttonContainer: {
+    marginTop: 20,
+  }
+});
 
 export default function InfoScreen() {
+  const navigation = useNavigation();
 
+  const navigateStart = () => {
+    navigation.navigate("Home");
+  }
 
-    const examInfo = useSelector((state: GlobalState) => state.examInfo)
-    const userInfo = useSelector((state: GlobalState) => state.userInfo)
-
-
-        const sendData = () => {
-            const dataToSend = {
-                userInfo: userInfo,
-                examInfo: examInfo,
-            };
-            postNewExam(dataToSend)
-        }
-    
-    
-    
-    return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-        <PrimaryButton text="Enviar Data" action={() => sendData}></PrimaryButton>
-        <Text> Informacion de la prueba</Text>
-        <Text>{JSON.stringify(examInfo)}</Text>
-        </View>
-    )
-    
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={require('../assets/LogoBackground.png')} style={styles.imageBackground}>
+        <Image source={require('../assets/Logo (2).png')} style={styles.logo} />
+        <ScrollView contentContainerStyle={styles.textContainer}>
+          <Text style={styles.text}>{CONSTANTS_TEXT.INFO_TEXT}</Text>
+        </ScrollView>
+          <View style={styles.buttonContainer}>
+            <SecondaryButton text="Volver al inicio" action={() => navigateStart}></SecondaryButton>
+          </View>
+      </ImageBackground>
+    </View>
+  );
 }
-
-
