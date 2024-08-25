@@ -97,7 +97,7 @@ export default function DeparmentQuestionScreen(){
 
     const onSubmit = () => {
 
-        const actualCountry = 'Huila'; 
+        const actualCountry = 'Valle del Cauca'; 
         if(answer === actualCountry){
 
             dispatch({

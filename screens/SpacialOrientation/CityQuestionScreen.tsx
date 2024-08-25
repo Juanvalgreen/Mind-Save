@@ -101,7 +101,7 @@ export default function CityQuestionScreen(){
 
     const onSubmit = () => {
 
-        const actualCountry = 'Neiva'; 
+        const actualCountry = 'Cali'; 
         if(answer === actualCountry){
 
             dispatch({
