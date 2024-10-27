@@ -3,6 +3,8 @@ import { UseDispatch, useDispatch } from "react-redux";
 import {useNavigation} from '@react-navigation/native';
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
+import { useEffect } from "react";
+import { sentenceValidate } from "../services/vertex";
 
 
 const styles = StyleSheet.create({
@@ -39,6 +41,10 @@ export default function InitScreen() {
     navigation.navigate("InfoScreen");
 
   }
+
+  useEffect(() => {
+    sentenceValidate('hola');
+  })
 
 
 
